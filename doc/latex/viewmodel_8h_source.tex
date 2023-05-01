@@ -1,0 +1,254 @@
+\hypertarget{viewmodel_8h_source}{}\doxysection{viewmodel.\+h}
+\label{viewmodel_8h_source}\index{/home/zach/Documents/glui/src/viewmodel.h@{/home/zach/Documents/glui/src/viewmodel.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*********************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ \ ViewModel.h}}
+\DoxyCodeLine{00004\ \textcolor{comment}{}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ GLUI\ User\ Interface\ Toolkit}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ Copyright\ (c)\ 1998\ Paul\ Rademacher}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ WWW:\ \ \ \ https://github.com/libglui/glui}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ \ Issues:\ https://github.com/libglui/glui/issues}}
+\DoxyCodeLine{00010\ \textcolor{comment}{}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ This\ software\ is\ provided\ 'as-\/is',\ without\ any\ express\ or\ implied}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ warranty.\ In\ no\ event\ will\ the\ authors\ be\ held\ liable\ for\ any\ damages}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ arising\ from\ the\ use\ of\ this\ software.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ Permission\ is\ granted\ to\ anyone\ to\ use\ this\ software\ for\ any\ purpose,}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ including\ commercial\ applications,\ and\ to\ alter\ it\ and\ redistribute\ it}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ freely,\ subject\ to\ the\ following\ restrictions:}}
+\DoxyCodeLine{00018\ \textcolor{comment}{}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ 1.\ The\ origin\ of\ this\ software\ must\ not\ be\ misrepresented;\ you\ must\ not}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ \ claim\ that\ you\ wrote\ the\ original\ software.\ If\ you\ use\ this\ software}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ in\ a\ product,\ an\ acknowledgment\ in\ the\ product\ documentation\ would\ be}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ appreciated\ but\ is\ not\ required.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ 2.\ Altered\ source\ versions\ must\ be\ plainly\ marked\ as\ such,\ and\ must\ not\ be}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ misrepresented\ as\ being\ the\ original\ software.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ 3.\ This\ notice\ may\ not\ be\ removed\ or\ altered\ from\ any\ source\ distribution.}}
+\DoxyCodeLine{00026\ \textcolor{comment}{}}
+\DoxyCodeLine{00027\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{/*********************************************************************}}
+\DoxyCodeLine{00030\ \textcolor{comment}{}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ \ The\ ViewModel\ class\ implements\ a\ camera\ model,\ minus\ the\ perspective}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ transformation.\ \ It\ maintains\ the\ coordinate\ system\ of\ the\ camera}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ \ as\ three\ vectors\ (forward,\ up,\ and\ side),\ which\ are\ themselves}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ derived\ from\ two\ points\ (eye\ and\ lookat).}}
+\DoxyCodeLine{00035\ \textcolor{comment}{}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ \ Apart\ from\ simplifying\ camera\ translation,\ this\ class\ provides}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ three\ rotation\ methods:\ yaw\ (rotation\ about\ the\ up\ axis),}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ roll\ (about\ the\ forward\ axis),\ and\ pitch\ (about\ the\ side\ axis).}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ Also,\ these\ rotations\ can\ take\ place\ about\ the\ eye\ (in\ which}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ \ case\ the\ eye\ location\ is\ fixed\ but\ the\ lookat\ point\ changes\ -\/}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ like\ rotating\ your\ head),\ or\ about\ the\ lookat\ point\ (in\ which}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ case\ your\ eye\ rotates\ around\ the\ point\ of\ interest).}}
+\DoxyCodeLine{00043\ \textcolor{comment}{}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ \ There\ is\ also\ a\ routine\ for\ rotating\ the\ eye\ about\ an\ arbitrary}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ axis,\ which\ is\ quite\ useful\ in\ conjuction\ with\ the\ world\ up\ axis.}}
+\DoxyCodeLine{00046\ \textcolor{comment}{}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ \ This\ class\ is\ heavily-\/dependent\ on\ the\ vec3\ class\ in}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ \ the\ file\ algebra3.h.}}
+\DoxyCodeLine{00049\ \textcolor{comment}{}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ The\ function\ update()\ sets\ the\ side\ and\ forward\ vectors\ based}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ on\ the\ lookat,\ eye,\ and\ up\ vectors.\ \ Remember\ to\ call\ this}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ \ function\ if\ you\ change\ the\ side\ or\ forward\ directly.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ Sample\ use:}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ \ \ \ \ ViewModel\ vm;}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ \ \ \ \ vm.eye.set(\ 0.0,\ 0.0,\ 20.0\ );}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ \ \ \ \ vm.lookat.set(\ 0.0,\ 0.0,\ 0.0\ );}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ \ \ \ vm.update();\ \ //\ updates\ the\ three\ vectors}}
+\DoxyCodeLine{00059\ \textcolor{comment}{}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ \ \ \ \ vm.move(\ 0.0,\ 2.0,\ 0.0\ );\ \ //\ Moves\ the\ eye\ and\ lookat}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ \ \ by\ 2\ units\ in\ the\ world}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ \ \ Y\ direction}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ \ \ \ \ vm.roll(\ 5.0\ );\ \ \ \ \ \ \ \ \ \ \ \ //\ \ \ rolls\ 5\ degrees\ about\ the\ forward\ axis}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ \ \ \ \ vm.lookat\_yaw(\ -\/25.0\ );\ \ \ \ //\ Yaws\ about\ the\ eye\ (lookat\ is}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ //\ \ \ fixed)\ by\ -\/25\ degrees}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ \ \ \ \ vm.load\_to\_openGL();\ \ \ \ \ \ \ //\ Sets\ OpenGL\ modelview\ matrix}}
+\DoxyCodeLine{00067\ \textcolor{comment}{}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ \ \ \ \ ..\ render\ ...}}
+\DoxyCodeLine{00069\ \textcolor{comment}{}}
+\DoxyCodeLine{00070\ \textcolor{comment}{}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ List\ of\ member\ functions\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ set\_distance()\ \ \ -\/\ Sets\ the\ distance\ from\ the\ eye\ to\ the\ lookat}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ set\_up()\ \ \ \ \ \ \ \ \ -\/\ Sets\ the\ current\ up\ vector}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ set\_eye()\ \ \ \ \ \ \ \ -\/\ Sets\ the\ current\ eye\ point}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ set\_lookat()\ \ \ \ \ -\/\ Sets\ the\ current\ lookat\ point}}
+\DoxyCodeLine{00076\ \textcolor{comment}{\ \ roll()\ \ \ \ \ \ \ \ \ \ \ -\/\ Rolls\ about\ forward\ axis}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ \ eye\_yaw()\ \ \ \ \ \ \ \ -\/\ Rotates\ eye\ about\ up\ vector}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ \ eye\_yaw\_abs()\ \ \ \ -\/\ Rotates\ eye\ about\ arbitrary\ axis}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ \ eye\_pitch()\ \ \ \ \ \ -\/\ Rotates\ eye\ about\ side\ vector}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ \ lookat\_yaw()\ \ \ \ \ -\/\ Rotates\ lookat\ about\ up\ vector}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ \ lookat\_pitch()\ \ \ -\/\ Rotates\ lookat\ about\ side\ vector}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ \ reset\_up\_level()\ -\/\ Resets\ the\ up\ vector\ (after\ unwanted\ rolls),\ and}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sets\ the\ eye\ level\ with\ the\ lookat\ point}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ \ move()\ \ \ \ \ \ \ \ \ \ \ -\/\ Moves\ eye\ and\ lookat\ by\ some\ amount}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ move\_by\_eye()\ \ \ \ -\/\ Moves\ eye\ to\ new\ position,\ lookat\ follows}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ move\_by\_lookat()\ -\/\ Moves\ lookat\ to\ new\ position,\ eye\ follows}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ move\_abs()\ \ \ \ \ \ \ -\/\ Moves\ eye\ and\ lookat\ in\ world\ coordinates}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ \ rot\_about\_eye()\ \ -\/\ Rotates\ about\ the\ eye\ point\ by\ a\ given\ 4x4\ matrix}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ rot\_about\_lookat()\ -\/\ Rotates\ about\ the\ lookat\ point\ by\ a\ given\ 4x4\ matrix}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ make\_mtx()\ \ \ \ \ \ \ -\/\ Constructs\ 4x4\ matrix,\ used\ by\ load\_to\_openGL()}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ \ load\_to\_openGL()\ -\/\ Loads\ current\ camera\ description\ in\ openGL}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ \ load\_to\_openGL\_noident()\ -\/\ Loads\ camera\ into\ OpenGL\ without\ first}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ resetting\ the\ OpenGL\ matrix\ to\ identity}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ \ reset()\ \ \ \ \ \ \ \ \ \ -\/\ Resets\ class\ values}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ \ ViewModel()\ \ \ \ \ \ -\/\ constructor}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ update()\ \ \ \ \ \ \ \ \ -\/\ Recalculates\ side\ and\ forward\ based\ on\ eye,}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ lookat,\ and\ up}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ \ dump()\ \ \ \ \ \ \ \ \ \ \ -\/\ Prints\ class\ contents\ to\ a\ file}}
+\DoxyCodeLine{00099\ \textcolor{comment}{}}
+\DoxyCodeLine{00100\ \textcolor{comment}{}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ \ \ \ \ \ 1996,\ Paul\ Rademacher\ (rademach@cs.unc.edu)}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ Oct\ 2003,\ Nigel\ Stewart\ -\/\ GLUI\ Code\ Cleaning}}
+\DoxyCodeLine{00103\ \textcolor{comment}{}}
+\DoxyCodeLine{00104\ \textcolor{comment}{*********************************************************************/}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#ifndef\ GLUI\_VIEWMODEL\_H}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#define\ GLUI\_VIEWMODEL\_H}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#include\ "{}algebra3.h"{}}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classViewModel}{ViewModel}}}
+\DoxyCodeLine{00112\ \{}
+\DoxyCodeLine{00113\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00114\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \ \ eye,\ lookat;}
+\DoxyCodeLine{00115\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \ \ up,\ side,\ forward;}
+\DoxyCodeLine{00116\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \ \ \ mtx;}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{float}\ \ \ distance;}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{comment}{\ \ /*******************************\ set\_distance()\ ***********/}}
+\DoxyCodeLine{00120\ \ \ \textcolor{comment}{/*\ This\ readjusts\ the\ distance\ from\ the\ eye\ to\ the\ lookat\ */}}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{/*\ (changing\ the\ eye\ point\ in\ the\ process)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00122\ \ \ \textcolor{comment}{/*\ The\ lookat\ point\ is\ unaffected\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keywordtype}{void}\ set\_distance(\textcolor{keywordtype}{float}\ new\_distance);}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{comment}{\ \ /*******************************\ set\_up()\ ***************/}}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordtype}{void}\ set\_up(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&new\_up);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{void}\ set\_up(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{comment}{\ \ /*******************************\ set\_eye()\ ***************/}}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordtype}{void}\ set\_eye(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&new\_eye\ );}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordtype}{void}\ set\_eye(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \textcolor{comment}{\ \ /*******************************\ set\_lookat()\ ***************/}}
+\DoxyCodeLine{00136\ \ \ \textcolor{keywordtype}{void}\ set\_lookat(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&new\_lookat);}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordtype}{void}\ set\_lookat(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \textcolor{comment}{\ \ /*******************************\ roll()\ *****************/}}
+\DoxyCodeLine{00141\ \ \ \textcolor{comment}{/*\ Rotates\ about\ the\ forward\ vector\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00142\ \ \ \textcolor{comment}{/*\ eye\ and\ lookat\ remain\ unchanged\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00143\ \ \ \textcolor{keywordtype}{void}\ roll(\textcolor{keywordtype}{float}\ angle);}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \textcolor{comment}{\ \ /*******************************\ eye\_yaw()\ *********************/}}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{/*\ Rotates\ the\ eye\ about\ the\ lookat\ point,\ using\ the\ up\ vector\ */}}
+\DoxyCodeLine{00147\ \ \ \textcolor{comment}{/*\ Lookat\ is\ unaffected\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keywordtype}{void}\ eye\_yaw(\textcolor{keywordtype}{float}\ angle);}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ /*******************************\ eye\_yaw\_abs()\ ******************/}}
+\DoxyCodeLine{00151\ \ \ \textcolor{comment}{/*\ Rotates\ the\ eye\ about\ the\ lookat\ point,\ with\ a\ specific\ axis\ */}}
+\DoxyCodeLine{00152\ \ \ \textcolor{comment}{/*\ Lookat\ is\ unaffected\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordtype}{void}\ eye\_yaw\_abs(\textcolor{keywordtype}{float}\ angle,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&axis);}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \textcolor{comment}{\ \ /*******************************\ eye\_pitch()\ ************/}}
+\DoxyCodeLine{00157\ \ \ \textcolor{comment}{/*\ Rotates\ the\ eye\ about\ the\ side\ vector\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{/*\ Lookat\ is\ unaffected\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keywordtype}{void}\ eye\_pitch(\textcolor{keywordtype}{float}\ angle);}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \textcolor{comment}{\ \ /*******************************\ lookat\_yaw()************/}}
+\DoxyCodeLine{00162\ \ \ \textcolor{comment}{/*\ This\ assumes\ the\ up\ vector\ is\ correct.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00163\ \ \ \textcolor{comment}{/*\ Rotates\ the\ lookat\ about\ the\ side\ vector\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{/*\ Eye\ point\ is\ unaffected\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordtype}{void}\ lookat\_yaw(\textcolor{keywordtype}{float}\ angle);}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ /*******************************\ lookat\_pitch()\ *********/}}
+\DoxyCodeLine{00168\ \ \ \textcolor{comment}{/*\ Rotates\ the\ lookat\ point\ about\ the\ side\ vector\ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00169\ \ \ \textcolor{comment}{/*\ This\ assumes\ the\ side\ vector\ is\ correct.\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00170\ \ \ \textcolor{comment}{/*\ Eye\ point\ is\ unaffected\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00171\ \ \ \textcolor{keywordtype}{void}\ lookat\_pitch(\textcolor{keywordtype}{float}\ angle);}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{comment}{\ \ /*******************************\ reset\_up()\ ******************/}}
+\DoxyCodeLine{00174\ \ \ \textcolor{comment}{/*\ Resets\ the\ up\ vector\ to\ a\ specified\ axis\ (0=X,\ 1=Y,\ 2=Z)\ \ */}}
+\DoxyCodeLine{00175\ \ \ \textcolor{comment}{/*\ Also\ sets\ the\ eye\ point\ level\ with\ the\ lookat\ point,\ \ \ \ \ \ */}}
+\DoxyCodeLine{00176\ \ \ \textcolor{comment}{/*\ along\ the\ specified\ axis\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00177\ \ \ \textcolor{keywordtype}{void}\ reset\_up(\textcolor{keywordtype}{int}\ axis\_num);}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \ \ \textcolor{keywordtype}{void}\ reset\_up();}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \textcolor{comment}{\ \ /*******************************\ move()\ ********************/}}
+\DoxyCodeLine{00182\ \ \ \textcolor{comment}{/*\ Moves\ a\ specified\ distance\ in\ the\ forward,\ side,\ and\ up\ */}}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{/*\ directions.\ \ This\ function\ does\ NOT\ move\ by\ world\ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00184\ \ \ \textcolor{comment}{/*\ coordinates.\ \ To\ move\ by\ world\ coords,\ use\ the\ move\_abs\ */}}
+\DoxyCodeLine{00185\ \ \ \textcolor{comment}{/*\ function.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{void}\ move(\textcolor{keywordtype}{float}\ side\_move,\ \textcolor{keywordtype}{float}\ up\_move,\ \textcolor{keywordtype}{float}\ forw\_move);}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \textcolor{keywordtype}{void}\ move(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \textcolor{comment}{\ \ /*******************************\ move\_by\_eye()\ ***********/}}
+\DoxyCodeLine{00191\ \ \ \textcolor{comment}{/*\ Sets\ the\ eye\ point,\ AND\ moves\ the\ lookat\ point\ by\ the\ */}}
+\DoxyCodeLine{00192\ \ \ \textcolor{comment}{/*\ same\ amount\ as\ the\ eye\ is\ moved.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00193\ \ \ \textcolor{keywordtype}{void}\ move\_by\_eye(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&new\_eye);}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \textcolor{comment}{\ \ /*******************************\ move\_by\_lookat()\ *********/}}
+\DoxyCodeLine{00196\ \ \ \textcolor{comment}{/*\ Sets\ the\ lookat\ point,\ AND\ moves\ the\ eye\ point\ by\ the\ \ */}}
+\DoxyCodeLine{00197\ \ \ \textcolor{comment}{/*\ same\ amount\ as\ the\ lookat\ is\ moved.\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordtype}{void}\ move\_by\_lookat(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&new\_lookat);}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \textcolor{comment}{\ \ /*******************************\ move\_abs()\ *****************/}}
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{/*\ Move\ the\ eye\ and\ lookat\ in\ world\ coordinates\ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00202\ \ \ \textcolor{keywordtype}{void}\ move\_abs(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ /******************************\ rot\_about\_eye()\ ************/}}
+\DoxyCodeLine{00205\ \ \ \textcolor{comment}{/*\ Rotates\ the\ lookat\ point\ about\ the\ eye,\ based\ on\ a\ 4x4\ \ */}}
+\DoxyCodeLine{00206\ \ \ \textcolor{comment}{/*\ (pure)\ rotation\ matrix\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00207\ \ \ \textcolor{keywordtype}{void}\ rot\_about\_eye(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&rot);}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \textcolor{comment}{\ \ /******************************\ rot\_about\_lookat()\ ************/}}
+\DoxyCodeLine{00210\ \ \ \textcolor{comment}{/*\ Rotates\ the\ lookat\ point\ about\ the\ lookat,\ based\ on\ a\ 4x4\ \ */}}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{/*\ (pure)\ rotation\ matrix\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00212\ \ \ \textcolor{keywordtype}{void}\ rot\_about\_lookat(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&rot);}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \textcolor{comment}{\ \ /*******************************\ make\_mtx()\ *************/}}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{/*\ Constructs\ a\ 4x4\ matrix\ -\/\ used\ by\ load\_to\_openGL()\ \ \ */}}
+\DoxyCodeLine{00216\ \ \ \textcolor{keywordtype}{void}\ make\_mtx();}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \textcolor{comment}{\ \ /*******************************\ load\_to\_openGL()\ ********/}}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{/*\ Sets\ the\ OpenGL\ modelview\ matrix\ based\ on\ the\ current\ */}}
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{/*\ camera\ coordinates\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keywordtype}{void}\ load\_to\_openGL();}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{comment}{\ \ /*******************************\ load\_to\_openGL\_noident()\ ******/}}
+\DoxyCodeLine{00224\ \ \ \textcolor{comment}{/*\ Multiplies\ the\ current\ camera\ matrix\ by\ the\ existing\ openGL\ */}}
+\DoxyCodeLine{00225\ \ \ \textcolor{comment}{/*\ modelview\ matrix.\ \ This\ is\ same\ as\ above\ function,\ but\ \ \ \ \ \ */}}
+\DoxyCodeLine{00226\ \ \ \textcolor{comment}{/*\ does\ not\ set\ the\ OpenGL\ matrix\ to\ identity\ first\ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00227\ \ \ \textcolor{keywordtype}{void}\ load\_to\_openGL\_noident();}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \textcolor{comment}{\ \ /*******************************\ reset()\ ****************/}}
+\DoxyCodeLine{00230\ \ \ \textcolor{comment}{/*\ Resets\ the\ parameters\ of\ this\ class\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{void}\ reset();}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \textcolor{comment}{\ \ /*******************************\ ViewModel()\ ************/}}
+\DoxyCodeLine{00234\ \ \ \textcolor{comment}{/*\ Constructor\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00235\ \ \ \mbox{\hyperlink{classViewModel}{ViewModel}}();}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \textcolor{comment}{\ \ /*******************************\ update()\ ****************/}}
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{/*\ updates\ the\ view\ params.\ \ Call\ this\ after\ making\ \ \ \ \ \ */}}
+\DoxyCodeLine{00239\ \ \ \textcolor{comment}{/*\ direct\ changes\ to\ the\ vectors\ or\ points\ of\ this\ class\ */}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordtype}{void}\ update();}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \textcolor{comment}{\ \ /*******************************\ dump()\ *******************/}}
+\DoxyCodeLine{00243\ \ \ \textcolor{comment}{/*\ Prints\ the\ contents\ of\ this\ class\ to\ a\ file,\ typically\ */}}
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{/*\ stdin\ or\ stderr\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordtype}{void}\ dump(FILE\ *output)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00246\ \};}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

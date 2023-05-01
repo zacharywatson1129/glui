@@ -1,0 +1,131 @@
+\hypertarget{classvec4}{}\doxysection{vec4 Class Reference}
+\label{classvec4}\index{vec4@{vec4}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classvec4_a4174b718621ba5b473ea2c289f11fe46}\label{classvec4_a4174b718621ba5b473ea2c289f11fe46}} 
+{\bfseries vec4} (float x, float y, float z, float w)
+\item 
+\mbox{\Hypertarget{classvec4_acccb915903f97605879d62049357c2b4}\label{classvec4_acccb915903f97605879d62049357c2b4}} 
+{\bfseries vec4} (const \mbox{\hyperlink{classvec4}{vec4}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_a977090532e2baca5d9b0affd029fab7d}\label{classvec4_a977090532e2baca5d9b0affd029fab7d}} 
+{\bfseries vec4} (const \mbox{\hyperlink{classvec3}{vec3}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_a38decce62d3631caf397b90078a39d64}\label{classvec4_a38decce62d3631caf397b90078a39d64}} 
+{\bfseries vec4} (const \mbox{\hyperlink{classvec3}{vec3}} \&v, float d)
+\item 
+\mbox{\Hypertarget{classvec4_aed2a473c8d724973efb4ede93a2a5e95}\label{classvec4_aed2a473c8d724973efb4ede93a2a5e95}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries operator=} (const \mbox{\hyperlink{classvec4}{vec4}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_a16d10f2ed44304fb1309f959f245ca52}\label{classvec4_a16d10f2ed44304fb1309f959f245ca52}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries operator+=} (const \mbox{\hyperlink{classvec4}{vec4}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_a88f2ead88470beaa5204573d3862166e}\label{classvec4_a88f2ead88470beaa5204573d3862166e}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries operator-\/=} (const \mbox{\hyperlink{classvec4}{vec4}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_a43918272bd61e5f8057de4a1ec0bd254}\label{classvec4_a43918272bd61e5f8057de4a1ec0bd254}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries operator$\ast$=} (float d)
+\item 
+\mbox{\Hypertarget{classvec4_a0fef5587e25bbb396685e410820f80a5}\label{classvec4_a0fef5587e25bbb396685e410820f80a5}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries operator/=} (float d)
+\item 
+\mbox{\Hypertarget{classvec4_a838c10fa2d4401cc00e103364e2f040c}\label{classvec4_a838c10fa2d4401cc00e103364e2f040c}} 
+float {\bfseries length} () const
+\item 
+\mbox{\Hypertarget{classvec4_a7118948ef4650ca4c08c812eaa3065fa}\label{classvec4_a7118948ef4650ca4c08c812eaa3065fa}} 
+float {\bfseries length2} () const
+\item 
+\mbox{\Hypertarget{classvec4_a13ccaff64d17779921fabd9d65396a4b}\label{classvec4_a13ccaff64d17779921fabd9d65396a4b}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries normalize} ()
+\item 
+\mbox{\Hypertarget{classvec4_ae4787582447129f06bded51177bc07a6}\label{classvec4_ae4787582447129f06bded51177bc07a6}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries apply} (V\+\_\+\+FCT\+\_\+\+PTR fct)
+\item 
+\mbox{\Hypertarget{classvec4_af44a87b94fd71ec7d78643e81124faf5}\label{classvec4_af44a87b94fd71ec7d78643e81124faf5}} 
+\mbox{\hyperlink{classvec4}{vec4}} \& {\bfseries homogenize} ()
+\item 
+\mbox{\Hypertarget{classvec4_a1611320f84f2516c6f2777cb69114aba}\label{classvec4_a1611320f84f2516c6f2777cb69114aba}} 
+void {\bfseries print} (FILE $\ast$file, const std\+::string \&name) const
+\item 
+\mbox{\Hypertarget{classvec4_a858b6b49f7476e4079d7e8d8becb2e03}\label{classvec4_a858b6b49f7476e4079d7e8d8becb2e03}} 
+void {\bfseries set} (float x, float y, float z, float a)
+\item 
+\mbox{\Hypertarget{classvec4_a2fbcfeb37dd07ace177c61b7caa9c4fa}\label{classvec4_a2fbcfeb37dd07ace177c61b7caa9c4fa}} 
+float \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i)
+\item 
+\mbox{\Hypertarget{classvec4_af6adadc31da7af60d1f14dfdb8062731}\label{classvec4_af6adadc31da7af60d1f14dfdb8062731}} 
+const float \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classvec4_a6383f73ada3e8f541af128f892a36826}\label{classvec4_a6383f73ada3e8f541af128f892a36826}} 
+float {\bfseries n} \mbox{[}4\mbox{]}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classvec4_aa849243c6cd858bbcd88237a8ad16cad}\label{classvec4_aa849243c6cd858bbcd88237a8ad16cad}} 
+class {\bfseries vec3}
+\item 
+\mbox{\Hypertarget{classvec4_a97061e9e921b7126184d68807056591e}\label{classvec4_a97061e9e921b7126184d68807056591e}} 
+class {\bfseries mat4}
+\item 
+\mbox{\Hypertarget{classvec4_ad251adce26c15c60b47175794dcee239}\label{classvec4_ad251adce26c15c60b47175794dcee239}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator-\/} (const \mbox{\hyperlink{classvec4}{vec4}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_abbfa144d13bf5c0d487dd48b6ef95b68}\label{classvec4_abbfa144d13bf5c0d487dd48b6ef95b68}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator+} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_a4e0631feb67b2a813523880ffa031c89}\label{classvec4_a4e0631feb67b2a813523880ffa031c89}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator-\/} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_a787be96555ccf446839a4f58ff38398d}\label{classvec4_a787be96555ccf446839a4f58ff38398d}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, float d)
+\item 
+\mbox{\Hypertarget{classvec4_aeaf98615ceec75318547289733ff213c}\label{classvec4_aeaf98615ceec75318547289733ff213c}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator$\ast$} (float d, const \mbox{\hyperlink{classvec4}{vec4}} \&a)
+\item 
+\mbox{\Hypertarget{classvec4_a0252c203e5a77099da7fd04c576ed437}\label{classvec4_a0252c203e5a77099da7fd04c576ed437}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{classmat4}{mat4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_ab8e4f991ed4a9b63e108d9bce7c80a50}\label{classvec4_ab8e4f991ed4a9b63e108d9bce7c80a50}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{classvec4}{vec4}} \&v, const \mbox{\hyperlink{classmat4}{mat4}} \&a)
+\item 
+\mbox{\Hypertarget{classvec4_adda90795cc9563711997dc2872ed825b}\label{classvec4_adda90795cc9563711997dc2872ed825b}} 
+float {\bfseries operator$\ast$} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_aab474ed7114f159e8b96a39fb75a77ed}\label{classvec4_aab474ed7114f159e8b96a39fb75a77ed}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries operator/} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, float d)
+\item 
+\mbox{\Hypertarget{classvec4_a341e4e99a5b48405ff8f6507aa604fa5}\label{classvec4_a341e4e99a5b48405ff8f6507aa604fa5}} 
+int {\bfseries operator==} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_ab31e1953c47b63ec12ee0765afdde4e5}\label{classvec4_ab31e1953c47b63ec12ee0765afdde4e5}} 
+int {\bfseries operator!=} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_ad7ca462c6964dec321ad4bbb83e1b343}\label{classvec4_ad7ca462c6964dec321ad4bbb83e1b343}} 
+void {\bfseries swap} (\mbox{\hyperlink{classvec4}{vec4}} \&a, \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_acf259b790c1ece6319533affe38a78d0}\label{classvec4_acf259b790c1ece6319533affe38a78d0}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries min\+\_\+vec} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_ac9c9289beff2b97eabba84edbe6cae15}\label{classvec4_ac9c9289beff2b97eabba84edbe6cae15}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries max\+\_\+vec} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_a63ceed040a54841b149af112fe18d491}\label{classvec4_a63ceed040a54841b149af112fe18d491}} 
+\mbox{\hyperlink{classvec4}{vec4}} {\bfseries prod} (const \mbox{\hyperlink{classvec4}{vec4}} \&a, const \mbox{\hyperlink{classvec4}{vec4}} \&b)
+\item 
+\mbox{\Hypertarget{classvec4_a3a7a7dfc514a58f3c889b48fa4745815}\label{classvec4_a3a7a7dfc514a58f3c889b48fa4745815}} 
+\mbox{\hyperlink{classvec3}{vec3}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{classmat4}{mat4}} \&a, const \mbox{\hyperlink{classvec3}{vec3}} \&v)
+\item 
+\mbox{\Hypertarget{classvec4_a15e77864e523807c2e4d9172f58cc96b}\label{classvec4_a15e77864e523807c2e4d9172f58cc96b}} 
+\mbox{\hyperlink{classmat4}{mat4}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{classmat4}{mat4}} \&a, const \mbox{\hyperlink{classmat4}{mat4}} \&b)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/zach/\+Documents/glui/src/algebra3.\+h\item 
+/home/zach/\+Documents/glui/src/algebra3.\+cpp\end{DoxyCompactItemize}

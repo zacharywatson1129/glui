@@ -1,0 +1,147 @@
+\hypertarget{glui__internal_8h_source}{}\doxysection{glui\+\_\+internal.\+h}
+\label{glui__internal_8h_source}\index{/home/zach/Documents/glui/src/glui\_internal.h@{/home/zach/Documents/glui/src/glui\_internal.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ \ This\ software\ is\ provided\ 'as-\/is',\ without\ any\ express\ or\ implied}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ \ warranty.\ In\ no\ event\ will\ the\ authors\ be\ held\ liable\ for\ any\ damages}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ \ arising\ from\ the\ use\ of\ this\ software.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ Permission\ is\ granted\ to\ anyone\ to\ use\ this\ software\ for\ any\ purpose,}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ including\ commercial\ applications,\ and\ to\ alter\ it\ and\ redistribute\ it}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ freely,\ subject\ to\ the\ following\ restrictions:}}
+\DoxyCodeLine{00009\ \textcolor{comment}{}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ \ 1.\ The\ origin\ of\ this\ software\ must\ not\ be\ misrepresented;\ you\ must\ not}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ claim\ that\ you\ wrote\ the\ original\ software.\ If\ you\ use\ this\ software}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ in\ a\ product,\ an\ acknowledgment\ in\ the\ product\ documentation\ would\ be}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ appreciated\ but\ is\ not\ required.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ 2.\ Altered\ source\ versions\ must\ be\ plainly\ marked\ as\ such,\ and\ must\ not\ be}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ misrepresented\ as\ being\ the\ original\ software.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ 3.\ This\ notice\ may\ not\ be\ removed\ or\ altered\ from\ any\ source}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#ifndef\ GLUI\_INTERNAL\_H}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ GLUI\_INTERNAL\_H}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#include\ <cstdio>}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#if\ defined(GLUI\_FREEGLUT)}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \textcolor{comment}{//\ FreeGLUT\ does\ not\ yet\ work\ perfectly\ with\ GLUI}}
+\DoxyCodeLine{00028\ \ \ \textcolor{comment}{//\ \ -\/\ use\ at\ your\ own\ risk.}}
+\DoxyCodeLine{00029\ \ \ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\ \ \#include\ <GL/freeglut.h>}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#elif\ defined(GLUI\_OPENGLUT)}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ OpenGLUT\ does\ not\ yet\ work\ properly\ with\ GLUI}}
+\DoxyCodeLine{00035\ \ \ \textcolor{comment}{//\ \ -\/\ use\ at\ your\ own\ risk.}}
+\DoxyCodeLine{00036\ \ \ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\ \ \#include\ <GL/openglut.h>}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#else\ }}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\ \ \#ifdef\ \_\_APPLE\_\_}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\ \ \#include\ <GLUT/glut.h>}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\ \ \#else}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\ \ \#include\ <GL/glut.h>}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#ifndef\ AND}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ AND\ \&\&}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ OR\ \ ||}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ NOT\ !}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#ifndef\ ABS}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#define\ ABS(a)\ ((a)>=0\ ?\ (a)\ :\ (-\/(a)))}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{comment}{/********************\ \ bit\ comparisons\ and\ operations\ ***************/}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#ifndef\ TEST\_BIT}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ TEST\_BIT(\ x,\ b\ )\ \ \ (((x)\ \&\ (1<<(b)))\ !=\ 0\ )}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ SET\_BIT(\ x,\ b\ )\ \ \ \ ((x)\ |=\ (1\ <<\ (b)))}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ CLEAR\_BIT(\ x,\ b\ )\ \ ((x)\ \&=\ \string~(1\ <<\ (b)))}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ TOGGLE\_BIT(\ x,\ b\ )\ ((TEST\_BIT(x,b))\ ?(CLEAR\_BIT(x,b)):(SET\_BIT(x,b)))}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#ifndef\ TEST\_AND}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ TEST\_AND(\ a,\ b\ )\ ((a\&b)==b)}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#ifndef\ M\_PI}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ M\_PI\ 3.141592654}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{comment}{/***********\ flush\ the\ stdout\ and\ stderr\ output\ streams\ *************/}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#ifndef\ flushout}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ flushout\ fflush(stdout)}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ flusherr\ fflush(stderr)}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{comment}{/**********\ Debugging\ functions\ *************************************/}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#ifndef\ error\_return}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ error\_return(\ c\ );\ \{fprintf(stderr,c);return;\}}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{comment}{/*************************\ floating-\/point\ random\ ********************/}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#ifndef\ randf}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ randf()\ \ ((float)\ rand()\ /\ (float)RAND\_MAX\ )}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#ifndef\ SIGN}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ SIGN(x)\ ((x)>=0\ ?\ \ 1\ \ :\ \ -\/1)}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{comment}{/******************\ conversion\ between\ degrees\ and\ radians\ **********/}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#ifndef\ DEG2RAD}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#define\ DEG2RAD(x)\ ((x)/180.0*M\_PI)}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ RAD2DEG(x)\ ((x)/M\_PI*180.0)}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{comment}{/*****************\ clamp\ a\ value\ to\ some\ fixed\ interval\ *************/}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#ifndef\ CLAMP}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#define\ CLAMP(x,lo,hi)\ \ \{if\ ((x)\ <\ (lo))\ \{(x)=(lo);\}\ else\ if((x)\ >\ (hi))\ \{(x)=(hi);\}\}}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{/************\ check\ if\ a\ value\ lies\ within\ a\ closed\ interval\ *********/}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#ifndef\ IN\_BOUNDS}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ IN\_BOUNDS(\ x,\ lo,\ hi\ )\ (\ (x)\ >=\ (lo)\ AND\ (x)\ <=\ (hi)\ )}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{comment}{/************\ check\ if\ a\ 2D\ point\ lies\ within\ a\ 2D\ box\ ***************/}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#ifndef\ PT\_IN\_BOX}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ PT\_IN\_BOX(\ x,\ y,\ lo\_x,\ hi\_x,\ lo\_y,\ hi\_y\ )\ \(\backslash\)}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{(\ IN\_BOUNDS(x,lo\_x,hi\_x)\ AND\ IN\_BOUNDS(y,lo\_y,hi\_y)\ )}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{comment}{/******\ check\ if\ value\ lies\ on\ proper\ side\ of\ another\ value\ \ \ \ \ *****/}}
+\DoxyCodeLine{00119\ \textcolor{comment}{/***\ if\ side\ is\ positive\ =>\ proper\ side\ is\ positive,\ else\ negative\ **/}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#ifndef\ CHECK\_PROPER\_SIDE}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#define\ CHECK\_PROPER\_SIDE(x,val,side)\ ((side)\ >\ 0\ ?\ (x)\ >\ (val)\ :\ (x)\ <\ (val))}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{comment}{/*****\ Small\ value\ when\ we\ want\ to\ do\ a\ comparison\ to\ 'close\ to\ zero'\ *****/}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#ifndef\ FUDGE}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ FUDGE\ .00001}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \textcolor{comment}{/*******************\ swap\ two\ values,\ using\ a\ temp\ variable\ *********/}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#ifndef\ SWAP2}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ SWAP2(a,b,t)\ \{t=a;a=b;b=t;\}}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ VEC3\_TO\_ARRAY(v,a)\ \ a[0]=v[0],\ a[1]=v[1],\ a[2]=v[2]}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{comment}{/****\ Return\ the\ ASCII\ control\ code\ given\ the\ non-\/control\ ASCII\ character\ */}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#define\ CTRL(c)\ (\ (c>=('a'-\/1))\ ?\ (c-\/'a'+1)\ :\ (c-\/'A'+1)\ )}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ GLUI\_INTERNAL\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

@@ -1,0 +1,67 @@
+\hypertarget{glui__internal__control_8h_source}{}\doxysection{glui\+\_\+internal\+\_\+control.\+h}
+\label{glui__internal__control_8h_source}\index{/home/zach/Documents/glui/src/glui\_internal\_control.h@{/home/zach/Documents/glui/src/glui\_internal\_control.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ Header\ file\ for\ use\ by\ GLUI\ controls.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ Everything\ you\ need\ is\ right\ here.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ This\ software\ is\ provided\ 'as-\/is',\ without\ any\ express\ or\ implied}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ warranty.\ In\ no\ event\ will\ the\ authors\ be\ held\ liable\ for\ any\ damages}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ arising\ from\ the\ use\ of\ this\ software.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ \ Permission\ is\ granted\ to\ anyone\ to\ use\ this\ software\ for\ any\ purpose,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ \ including\ commercial\ applications,\ and\ to\ alter\ it\ and\ redistribute\ it}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ freely,\ subject\ to\ the\ following\ restrictions:}}
+\DoxyCodeLine{00012\ \textcolor{comment}{}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ 1.\ The\ origin\ of\ this\ software\ must\ not\ be\ misrepresented;\ you\ must\ not}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ claim\ that\ you\ wrote\ the\ original\ software.\ If\ you\ use\ this\ software}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ in\ a\ product,\ an\ acknowledgment\ in\ the\ product\ documentation\ would\ be}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ appreciated\ but\ is\ not\ required.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ 2.\ Altered\ source\ versions\ must\ be\ plainly\ marked\ as\ such,\ and\ must\ not\ be}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ misrepresented\ as\ being\ the\ original\ software.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ 3.\ This\ notice\ may\ not\ be\ removed\ or\ altered\ from\ any\ source\ distribution.}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#ifndef\ \_\_GLUI\_INTERNAL\_CONTROL\_H}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ \_\_GLUI\_INTERNAL\_CONTROL\_H}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#ifdef\ \_\_APPLE\_\_}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#ifndef\ GL\_SILENCE\_DEPRECATION}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ GL\_SILENCE\_DEPRECATION}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ NOMINMAX}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#include\ <windows.h>}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{/*\ This\ is\ the\ main\ GLUI\ external\ header\ */}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#include\ "{}GL/glui.h"{}}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{/*\ Here's\ some\ utility\ routines\ */}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ "{}glui\_internal.h"{}}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00049\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classGLUI__DrawingSentinal}{GLUI\_DrawingSentinal}}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ orig\_buf,\ orig\_win;}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{classGLUI__Control}{GLUI\_Control}}\ *c;}
+\DoxyCodeLine{00052\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00054\ \ \ \ \ \mbox{\hyperlink{classGLUI__DrawingSentinal}{GLUI\_DrawingSentinal}}(\mbox{\hyperlink{classGLUI__Control}{GLUI\_Control}}\ *c\_);}
+\DoxyCodeLine{00056\ \ \ \ \ \mbox{\hyperlink{classGLUI__DrawingSentinal_a5d51d02a9b128b94552cf48d50af21f8}{\string~GLUI\_DrawingSentinal}}();}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ Do-\/nothing\ routine\ to\ avoid\ compiler\ warning\ about\ unused\ variable}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ avoid\_warning(\textcolor{keywordtype}{void})\ \{\}}
+\DoxyCodeLine{00060\ \};}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ GLUI\_DRAWINGSENTINAL\_IDIOM\ \ if\ (NOT\ can\_draw())\ return;\ GLUI\_DrawingSentinal\ drawSentinal(this);\ drawSentinal.avoid\_warning();}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{comment}{/**********\ Bitmap\ strings\ *********************/}}
+\DoxyCodeLine{00068\ \textcolor{keywordtype}{int}\ \_glutBitmapWidthString(\ \textcolor{keywordtype}{void}\ *font,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classGLUI__String}{GLUI\_String}}\ \&s\ );}
+\DoxyCodeLine{00069\ \textcolor{keywordtype}{void}\ \_glutBitmapString(\ \textcolor{keywordtype}{void}\ *font,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classGLUI__String}{GLUI\_String}}\ \&s\ );}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00072\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ GLUI\_Time(\textcolor{keywordtype}{void})\ \{\textcolor{keywordflow}{return}\ 0.001*glutGet(GLUT\_ELAPSED\_TIME);\}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

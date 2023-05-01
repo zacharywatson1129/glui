@@ -1,0 +1,485 @@
+\hypertarget{algebra3_8h_source}{}\doxysection{algebra3.\+h}
+\label{algebra3_8h_source}\index{/home/zach/Documents/glui/src/algebra3.h@{/home/zach/Documents/glui/src/algebra3.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ \ algebra3.cpp,\ algebra3.h\ -\/\ \ C++\ Vector\ and\ Matrix\ Algebra\ routines}}
+\DoxyCodeLine{00004\ \textcolor{comment}{}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ GLUI\ User\ Interface\ Toolkit}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ Copyright\ (c)\ 1998\ Paul\ Rademacher}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ WWW:\ \ \ \ https://github.com/libglui/glui}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ \ Issues:\ https://github.com/libglui/glui/issues}}
+\DoxyCodeLine{00010\ \textcolor{comment}{}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ This\ software\ is\ provided\ 'as-\/is',\ without\ any\ express\ or\ implied}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ warranty.\ In\ no\ event\ will\ the\ authors\ be\ held\ liable\ for\ any\ damages}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ arising\ from\ the\ use\ of\ this\ software.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ Permission\ is\ granted\ to\ anyone\ to\ use\ this\ software\ for\ any\ purpose,}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ including\ commercial\ applications,\ and\ to\ alter\ it\ and\ redistribute\ it}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ freely,\ subject\ to\ the\ following\ restrictions:}}
+\DoxyCodeLine{00018\ \textcolor{comment}{}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ 1.\ The\ origin\ of\ this\ software\ must\ not\ be\ misrepresented;\ you\ must\ not}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ \ claim\ that\ you\ wrote\ the\ original\ software.\ If\ you\ use\ this\ software}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ in\ a\ product,\ an\ acknowledgment\ in\ the\ product\ documentation\ would\ be}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ appreciated\ but\ is\ not\ required.}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ 2.\ Altered\ source\ versions\ must\ be\ plainly\ marked\ as\ such,\ and\ must\ not\ be}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ misrepresented\ as\ being\ the\ original\ software.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ 3.\ This\ notice\ may\ not\ be\ removed\ or\ altered\ from\ any\ source\ distribution.}}
+\DoxyCodeLine{00026\ \textcolor{comment}{}}
+\DoxyCodeLine{00027\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{/**************************************************************************}}
+\DoxyCodeLine{00030\ \textcolor{comment}{}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ \ There\ are\ three\ vector\ classes\ and\ two\ matrix\ classes:\ vec2,\ vec3,}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ vec4,\ mat3,\ and\ mat4.}}
+\DoxyCodeLine{00033\ \textcolor{comment}{}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ All\ the\ standard\ arithmetic\ operations\ are\ defined,\ with\ '*'}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ \ for\ dot\ product\ of\ two\ vectors\ and\ multiplication\ of\ two\ matrices,}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ \ and\ '\string^'\ for\ cross\ product\ of\ two\ vectors.}}
+\DoxyCodeLine{00037\ \textcolor{comment}{}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ Additional\ functions\ include\ length(),\ normalize(),\ homogenize\ for}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ vectors,\ and\ print(),\ set(),\ apply()\ for\ all\ classes.}}
+\DoxyCodeLine{00040\ \textcolor{comment}{}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ There\ is\ a\ function\ transpose()\ for\ matrices,\ but\ note\ that\ it}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ does\ not\ actually\ change\ the\ matrix,}}
+\DoxyCodeLine{00043\ \textcolor{comment}{}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ \ When\ multiplied\ with\ a\ matrix,\ a\ vector\ is\ treated\ as\ a\ row\ vector}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ if\ it\ precedes\ the\ matrix\ (v*M),\ and\ as\ a\ column\ vector\ if\ it}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ follows\ the\ matrix\ (M*v).}}
+\DoxyCodeLine{00047\ \textcolor{comment}{}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ \ Matrices\ are\ stored\ in\ row-\/major\ form.}}
+\DoxyCodeLine{00049\ \textcolor{comment}{}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ A\ vector\ of\ one\ dimension\ (2d,\ 3d,\ or\ 4d)\ can\ be\ cast\ to\ a\ vector}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ of\ a\ higher\ or\ lower\ dimension.\ \ If\ casting\ to\ a\ higher\ dimension,}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ \ the\ new\ component\ is\ set\ by\ default\ to\ 1.0,\ unless\ a\ value\ is}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ \ specified:}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ \ \ \ vec3\ a(1.0,\ 2.0,\ 3.0\ );}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ \ \ \ \ vec4\ b(\ a,\ 4.0\ );\ \ \ \ \ \ \ //\ now\ b\ ==\ \{1.0,\ 2.0,\ 3.0,\ 4.0\};}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ \ When\ casting\ to\ a\ lower\ dimension,\ the\ vector\ is\ homogenized\ in}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ \ the\ lower\ dimension.\ \ E.g.,\ if\ a\ 4d\ \{X,Y,Z,W\}\ is\ cast\ to\ 3d,\ the}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ resulting\ vector\ is\ \{X/W,\ Y/W,\ Z/W\}.\ \ It\ is\ up\ to\ the\ user\ to}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ insure\ the\ fourth\ component\ is\ not\ zero\ before\ casting.}}
+\DoxyCodeLine{00060\ \textcolor{comment}{}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ \ There\ are\ also\ the\ following\ function\ for\ building\ matrices:}}
+\DoxyCodeLine{00062\ \textcolor{comment}{\ \ \ \ \ identity2D(),\ translation2D(),\ rotation2D(),}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ \ \ \ \ scaling2D(),\ \ identity3D(),\ \ \ \ translation3D(),}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ \ \ \ \ rotation3D(),\ rotation3Drad(),\ \ scaling3D(),}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ \ \ \ \ perspective3D()}}
+\DoxyCodeLine{00066\ \textcolor{comment}{}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ \ NOTE:\ When\ compiling\ for\ Windows,\ include\ this\ file\ first,\ to\ avoid}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ \ \ \ \ \ \ \ certain\ name\ conflicts}}
+\DoxyCodeLine{00069\ \textcolor{comment}{}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00071\ \textcolor{comment}{}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ Author:\ Jean-\/Francois\ DOUEg}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ Revised:\ Paul\ Rademacher}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ Version\ 3.2\ -\/\ Feb\ 1998}}
+\DoxyCodeLine{00075\ \textcolor{comment}{\ \ Revised:\ Nigel\ Stewart\ (GLUI\ Code\ Cleaning)}}
+\DoxyCodeLine{00076\ \textcolor{comment}{}}
+\DoxyCodeLine{00077\ \textcolor{comment}{**************************************************************************/}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#ifndef\ GLUI\_ALGEBRA3\_H}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ GLUI\_ALGEBRA3\_H}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#include\ <cstdio>}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ this\ line\ defines\ a\ new\ type:\ pointer\ to\ a\ function\ which\ returns\ a}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ float\ and\ takes\ as\ argument\ a\ float}}
+\DoxyCodeLine{00090\ \textcolor{keyword}{typedef}\ float\ (*V\_FCT\_PTR)(float);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec2}{vec2}};}
+\DoxyCodeLine{00093\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec3}{vec3}};}
+\DoxyCodeLine{00094\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec4}{vec4}};}
+\DoxyCodeLine{00095\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmat3}{mat3}};}
+\DoxyCodeLine{00096\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmat4}{mat4}};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#ifndef\ M\_PI}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ M\_PI\ 3.141592654}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \textcolor{keyword}{enum}\ \{VX,\ VY,\ VZ,\ VW\};\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ axes}}
+\DoxyCodeLine{00103\ \textcolor{keyword}{enum}\ \{PA,\ PB,\ PC,\ PD\};\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ planes}}
+\DoxyCodeLine{00104\ \textcolor{keyword}{enum}\ \{RED,\ GREEN,\ BLUE,\ ALPHA\};\ \ \textcolor{comment}{//\ colors}}
+\DoxyCodeLine{00105\ \textcolor{keyword}{enum}\ \{KA,\ KD,\ KS,\ ES\};\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ phong\ coefficients}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{/****************************************************************}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ 2D\ Vector\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00110\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00111\ \textcolor{comment}{\ ****************************************************************/}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec2}{vec2}}}
+\DoxyCodeLine{00114\ \{}
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec3}{vec3}};}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \ \ \textcolor{keywordtype}{float}\ n[2];}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \ \ \textcolor{comment}{//\ Constructors}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \ \ \mbox{\hyperlink{classvec2}{vec2}}();}
+\DoxyCodeLine{00126\ \ \ \mbox{\hyperlink{classvec2}{vec2}}(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y);}
+\DoxyCodeLine{00127\ \ \ \mbox{\hyperlink{classvec2}{vec2}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00128\ \ \ \mbox{\hyperlink{classvec2}{vec2}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cast\ v3\ to\ v2}}
+\DoxyCodeLine{00129\ \ \ \mbox{\hyperlink{classvec2}{vec2}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keywordtype}{int}\ dropAxis);\ \ \ \ \ \textcolor{comment}{//\ cast\ v3\ to\ v2}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \textcolor{comment}{//\ Assignment\ operators}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ \&operator\ \ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \textcolor{comment}{//\ assignment\ of\ a\ vec2}}
+\DoxyCodeLine{00134\ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ \&operator\ +=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \textcolor{comment}{//\ incrementation\ by\ a\ vec2}}
+\DoxyCodeLine{00135\ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ \&operator\ -\/=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \textcolor{comment}{//\ decrementation\ by\ a\ vec2}}
+\DoxyCodeLine{00136\ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ \&operator\ *=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \textcolor{comment}{//\ multiplication\ by\ a\ constant}}
+\DoxyCodeLine{00137\ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ \&operator\ /=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \textcolor{comment}{//\ division\ by\ a\ constant}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ \textcolor{comment}{//\ special\ functions}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordtype}{float}\ \ length()\ \ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ length\ of\ a\ vec2}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordtype}{float}\ \ length2()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ squared\ length\ of\ a\ vec2}}
+\DoxyCodeLine{00143\ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ \&normalize();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ normalize\ a\ vec2}}
+\DoxyCodeLine{00144\ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ \&apply(V\_FCT\_PTR\ fct);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ apply\ a\ func.\ to\ each\ component}}
+\DoxyCodeLine{00145\ \ \ \textcolor{keywordtype}{void}\ \ \ set(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ set\ vector}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00148\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i)\ \textcolor{keyword}{const};\ \ \ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \textcolor{comment}{//\ friends}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/v1}}
+\DoxyCodeLine{00153\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ +\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \textcolor{comment}{//\ v1\ +\ v2}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \textcolor{comment}{//\ v1\ -\/\ v2}}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ v1\ *\ 3.0}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ *\ \ (\textcolor{keywordtype}{float}\ d,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.0\ *\ v1}}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \textcolor{comment}{//\ M\ .\ v}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a);\ \ \ \ \textcolor{comment}{//\ v\ .\ M}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{float}\ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \textcolor{comment}{//\ dot\ product}}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ \ operator\ /\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ v1\ /\ 3.0}}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ \string^\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \textcolor{comment}{//\ cross\ product}}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ \ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \textcolor{comment}{//\ v1\ ==\ v2\ ?}}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ \ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \textcolor{comment}{//\ v1\ !=\ v2\ ?}}
+\DoxyCodeLine{00164\ \ \ \textcolor{comment}{//friend\ ostream\&\ operator\ <<\ (ostream\&\ s,\ vec2\&\ v);\ \ \ \ \ \ \ \ //\ output\ to\ stream}}
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//friend\ istream\&\ operator\ >>\ (istream\&\ s,\ vec2\&\ v);\ \ \ \ \ \ \ \ //\ input\ from\ strm.}}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(\mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swap\ v1\ \&\ v2}}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ min\_vec(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ min(v1,\ v2)}}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ max\_vec(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ max(v1,\ v2)}}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ prod\ \ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&b);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ term\ by\ term\ *}}
+\DoxyCodeLine{00170\ \};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \textcolor{comment}{/****************************************************************}}
+\DoxyCodeLine{00173\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00174\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3D\ Vector\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ ****************************************************************/}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec3}{vec3}}}
+\DoxyCodeLine{00179\ \{}
+\DoxyCodeLine{00180\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec2}{vec2}};}
+\DoxyCodeLine{00181\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec4}{vec4}};}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmat3}{mat3}};}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \textcolor{keywordtype}{float}\ n[3];}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \textcolor{comment}{//\ Constructors}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \mbox{\hyperlink{classvec3}{vec3}}();}
+\DoxyCodeLine{00193\ \ \ \mbox{\hyperlink{classvec3}{vec3}}(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);}
+\DoxyCodeLine{00194\ \ \ \mbox{\hyperlink{classvec3}{vec3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00195\ \ \ \mbox{\hyperlink{classvec3}{vec3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cast\ v2\ to\ v3}}
+\DoxyCodeLine{00196\ \ \ \mbox{\hyperlink{classvec3}{vec3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \textcolor{comment}{//\ cast\ v2\ to\ v3}}
+\DoxyCodeLine{00197\ \ \ \mbox{\hyperlink{classvec3}{vec3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cast\ v4\ to\ v3}}
+\DoxyCodeLine{00198\ \ \ \mbox{\hyperlink{classvec3}{vec3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v,\ \textcolor{keywordtype}{int}\ dropAxis);\ \textcolor{comment}{//\ cast\ v4\ to\ v3}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \textcolor{comment}{//\ Assignment\ operators}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \&operator\ \ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{//\ assignment\ of\ a\ vec3}}
+\DoxyCodeLine{00203\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \&operator\ +=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{//\ incrementation\ by\ a\ vec3}}
+\DoxyCodeLine{00204\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \&operator\ -\/=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{//\ decrementation\ by\ a\ vec3}}
+\DoxyCodeLine{00205\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \&operator\ *=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \textcolor{comment}{//\ multiplication\ by\ a\ constant}}
+\DoxyCodeLine{00206\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \&operator\ /=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \textcolor{comment}{//\ division\ by\ a\ constant}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \textcolor{comment}{//\ special\ functions}}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \textcolor{keywordtype}{float}\ \ length()\ \ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ length\ of\ a\ vec3}}
+\DoxyCodeLine{00211\ \ \ \textcolor{keywordtype}{float}\ \ length2()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ squared\ length\ of\ a\ vec3}}
+\DoxyCodeLine{00212\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\&\ \ normalize();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ normalize\ a\ vec3}}
+\DoxyCodeLine{00213\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\&\ \ homogenize();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ homogenize\ (div\ by\ Z)}}
+\DoxyCodeLine{00214\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\&\ \ apply(V\_FCT\_PTR\ fct);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ apply\ a\ func.\ to\ each\ component}}
+\DoxyCodeLine{00215\ \ \ \textcolor{keywordtype}{void}\ \ \ set(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);\ \ \ \ \ \ \textcolor{comment}{//\ set\ vector}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ \textcolor{keywordtype}{void}\ \ \ print(FILE\ *file,\ \textcolor{keyword}{const}\ std::string\ \&name)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ print\ vector\ to\ a\ file}}
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i);\ \ \ \ \ \ \ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00221\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \textcolor{comment}{//\ friends}}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/v1}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ +\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \textcolor{comment}{//\ v1\ +\ v2}}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \textcolor{comment}{//\ v1\ -\/\ v2}}
+\DoxyCodeLine{00228\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ v1\ *\ 3.0}}
+\DoxyCodeLine{00229\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ *\ \ (\textcolor{keywordtype}{float}\ d,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.0\ *\ v1}}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \textcolor{comment}{//\ M\ .\ v}}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a);\ \ \textcolor{comment}{//\ v\ .\ M}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{float}\ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \textcolor{comment}{//\ dot\ product}}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ /\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \textcolor{comment}{//\ v1\ /\ 3.0}}
+\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ \ operator\ \string^\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \textcolor{comment}{//\ cross\ product}}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ \ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \textcolor{comment}{//\ v1\ ==\ v2\ ?}}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ \ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \textcolor{comment}{//\ v1\ !=\ v2\ ?}}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//friend\ ostream\&\ operator\ <<\ (ostream\&\ s,\ vec3\&\ v);\ \ \ \ \ \ //\ output\ to\ stream}}
+\DoxyCodeLine{00238\ \ \ \textcolor{comment}{//friend\ istream\&\ operator\ >>\ (istream\&\ s,\ vec3\&\ v);\ \ \ \ \ \ //\ input\ from\ strm.}}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(\mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swap\ v1\ \&\ v2}}
+\DoxyCodeLine{00240\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ min\_vec(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ min(v1,\ v2)}}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ max\_vec(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ max(v1,\ v2)}}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ prod(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&b);\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ term\ by\ term\ *}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \textcolor{comment}{//\ necessary\ friend\ declarations}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00247\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&b);\ \ \ \ \textcolor{comment}{//\ matrix\ 3\ product}}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \textcolor{comment}{/****************************************************************}}
+\DoxyCodeLine{00252\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00253\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ 4D\ Vector\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ ****************************************************************/}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec4}{vec4}}}
+\DoxyCodeLine{00258\ \{}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classvec3}{vec3}};}
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmat4}{mat4}};}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordtype}{float}\ n[4];}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{comment}{//\ Constructors}}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00270\ \ \ \mbox{\hyperlink{classvec4}{vec4}}();}
+\DoxyCodeLine{00271\ \ \ \mbox{\hyperlink{classvec4}{vec4}}(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z,\ \textcolor{keywordtype}{float}\ w);}
+\DoxyCodeLine{00272\ \ \ \mbox{\hyperlink{classvec4}{vec4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ copy\ constructor}}
+\DoxyCodeLine{00273\ \ \ \mbox{\hyperlink{classvec4}{vec4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ cast\ vec3\ to\ vec4}}
+\DoxyCodeLine{00274\ \ \ \mbox{\hyperlink{classvec4}{vec4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \textcolor{comment}{//\ cast\ vec3\ to\ vec4}}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ \textcolor{comment}{//\ Assignment\ operators}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&operator\ \ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \ \textcolor{comment}{//\ assignment\ of\ a\ vec4}}
+\DoxyCodeLine{00279\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&operator\ +=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \ \textcolor{comment}{//\ incrementation\ by\ a\ vec4}}
+\DoxyCodeLine{00280\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&operator\ -\/=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \ \textcolor{comment}{//\ decrementation\ by\ a\ vec4}}
+\DoxyCodeLine{00281\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&operator\ *=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \textcolor{comment}{//\ multiplication\ by\ a\ constant}}
+\DoxyCodeLine{00282\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&operator\ /=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \textcolor{comment}{//\ division\ by\ a\ constant}}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \ \ \textcolor{comment}{//\ special\ functions}}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \ \ \textcolor{keywordtype}{float}\ \ length()\ \ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ length\ of\ a\ vec4}}
+\DoxyCodeLine{00287\ \ \ \textcolor{keywordtype}{float}\ \ length2()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ squared\ length\ of\ a\ vec4}}
+\DoxyCodeLine{00288\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&normalize();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ normalize\ a\ vec4}}
+\DoxyCodeLine{00289\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&apply(V\_FCT\_PTR\ fct);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ apply\ a\ func.\ to\ each\ component}}
+\DoxyCodeLine{00290\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \ \&homogenize();}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{void}\ \ \ print(FILE\ *file,\ \textcolor{keyword}{const}\ std::string\ \&name)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ print\ vector\ to\ a\ file}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \textcolor{keywordtype}{void}\ \ \ set(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z,\ \textcolor{keywordtype}{float}\ a);}
+\DoxyCodeLine{00295\ }
+\DoxyCodeLine{00296\ \ \ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \ \ \textcolor{comment}{//\ friends}}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/v1}}
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ +\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \textcolor{comment}{//\ v1\ +\ v2}}
+\DoxyCodeLine{00303\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \textcolor{comment}{//\ v1\ -\/\ v2}}
+\DoxyCodeLine{00304\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ v1\ *\ 3.0}}
+\DoxyCodeLine{00305\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ *\ \ (\textcolor{keywordtype}{float}\ d,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.0\ *\ v1}}
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \textcolor{comment}{//\ M\ .\ v}}
+\DoxyCodeLine{00307\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a);\ \ \ \textcolor{comment}{//\ v\ .\ M}}
+\DoxyCodeLine{00308\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{float}\ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \textcolor{comment}{//\ dot\ product}}
+\DoxyCodeLine{00309\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ \ operator\ /\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \textcolor{comment}{//\ v1\ /\ 3.0}}
+\DoxyCodeLine{00310\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ \ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \textcolor{comment}{//\ v1\ ==\ v2\ ?}}
+\DoxyCodeLine{00311\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ \ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \textcolor{comment}{//\ v1\ !=\ v2\ ?}}
+\DoxyCodeLine{00312\ \ \ \textcolor{comment}{//friend\ ostream\&\ operator\ <<\ (ostream\&\ s,\ vec4\&\ v);\ \ \ \ \ \ \ //\ output\ to\ stream}}
+\DoxyCodeLine{00313\ \ \ \textcolor{comment}{//friend\ istream\&\ operator\ >>\ (istream\&\ s,\ vec4\&\ v);\ \ \ \ \ \ \ //\ input\ from\ strm.}}
+\DoxyCodeLine{00314\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(\mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swap\ v1\ \&\ v2}}
+\DoxyCodeLine{00315\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ min\_vec(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ min(v1,\ v2)}}
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ max\_vec(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ max(v1,\ v2)}}
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ prod\ \ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&b);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ term\ by\ term\ *}}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \textcolor{comment}{//\ necessary\ friend\ declarations}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00322\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&b);\ \ \ \ \ \textcolor{comment}{//\ matrix\ 4\ product}}
+\DoxyCodeLine{00323\ \};}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \textcolor{comment}{/****************************************************************}}
+\DoxyCodeLine{00326\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00327\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ 3x3\ Matrix\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00328\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00329\ \textcolor{comment}{\ ****************************************************************/}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmat3}{mat3}}}
+\DoxyCodeLine{00332\ \{}
+\DoxyCodeLine{00333\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ v[3];}
+\DoxyCodeLine{00336\ }
+\DoxyCodeLine{00337\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \textcolor{comment}{//\ Constructors}}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \ \ \mbox{\hyperlink{classmat3}{mat3}}();}
+\DoxyCodeLine{00342\ \ \ \mbox{\hyperlink{classmat3}{mat3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v0,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v2);}
+\DoxyCodeLine{00343\ \ \ \mbox{\hyperlink{classmat3}{mat3}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&m);}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \ \ \textcolor{comment}{//\ Assignment\ operators}}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \&operator\ \ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \ \&m);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ assignment\ of\ a\ mat3}}
+\DoxyCodeLine{00348\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \&operator\ +=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \ \&m);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ incrementation\ by\ a\ mat3}}
+\DoxyCodeLine{00349\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \&operator\ -\/=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \ \&m);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ decrementation\ by\ a\ mat3}}
+\DoxyCodeLine{00350\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \&operator\ *=\ (\textcolor{keywordtype}{float}\ \ d);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ multiplication\ by\ a\ constant}}
+\DoxyCodeLine{00351\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \&operator\ /=\ (\textcolor{keywordtype}{float}\ \ d);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ division\ by\ a\ constant}}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{//\ special\ functions}}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \ transpose()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ transpose}}
+\DoxyCodeLine{00356\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \ inverse()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ inverse}}
+\DoxyCodeLine{00357\ \ \ \mbox{\hyperlink{classmat3}{mat3}}\ \&apply(V\_FCT\_PTR\ fct);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ apply\ a\ func.\ to\ each\ element}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \textcolor{keywordtype}{void}\ \ print(FILE\ *file,\ \textcolor{keyword}{const}\ std::string\ \&name\ )\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ print\ matrix\ to\ a\ file}}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00361\ \ \ \textcolor{keywordtype}{void}\ \ set(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v0,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v2);}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i);\ \ \ \ \ \ \ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00364\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \ \ \textcolor{comment}{//\ friends}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/m1}}
+\DoxyCodeLine{00369\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ +\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ +\ m2}}
+\DoxyCodeLine{00370\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ -\/\ m2}}
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ *\ m2}}
+\DoxyCodeLine{00372\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ m1\ *\ 3.0}}
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ *\ \ (\textcolor{keywordtype}{float}\ d,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.0\ *\ m1}}
+\DoxyCodeLine{00374\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat3}{mat3}}\ operator\ /\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ m1\ /\ 3.0}}
+\DoxyCodeLine{00375\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ ==\ m2\ ?}}
+\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ !=\ m2\ ?}}
+\DoxyCodeLine{00377\ \ \ \textcolor{comment}{//friend\ ostream\&\ operator\ <<\ (ostream\&\ s,\ mat3\&\ m);\ \ \ \ \ \ \ \ \ //\ output\ to\ stream}}
+\DoxyCodeLine{00378\ \ \ \textcolor{comment}{//friend\ istream\&\ operator\ >>\ (istream\&\ s,\ mat3\&\ m);\ \ \ \ \ \ \ \ \ //\ input\ from\ strm.}}
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(\mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \mbox{\hyperlink{classmat3}{mat3}}\ \&b);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swap\ m1\ \&\ m2}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \ \ \textcolor{comment}{//\ necessary\ friend\ declarations}}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00384\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec2}{vec2}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00385\ \};}
+\DoxyCodeLine{00386\ }
+\DoxyCodeLine{00387\ \textcolor{comment}{/****************************************************************}}
+\DoxyCodeLine{00388\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00389\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ 4x4\ Matrix\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00390\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00391\ \textcolor{comment}{\ ****************************************************************/}}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classmat4}{mat4}}}
+\DoxyCodeLine{00394\ \{}
+\DoxyCodeLine{00395\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ v[4];}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \ \ \textcolor{comment}{//\ Constructors}}
+\DoxyCodeLine{00402\ }
+\DoxyCodeLine{00403\ \ \ \mbox{\hyperlink{classmat4}{mat4}}();}
+\DoxyCodeLine{00404\ \ \ \mbox{\hyperlink{classmat4}{mat4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v0,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v1,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v2,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v3);}
+\DoxyCodeLine{00405\ \ \ \mbox{\hyperlink{classmat4}{mat4}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&m);}
+\DoxyCodeLine{00406\ \ \ \mbox{\hyperlink{classmat4}{mat4}}(\textcolor{keywordtype}{float}\ a00,\ \textcolor{keywordtype}{float}\ a01,\ \textcolor{keywordtype}{float}\ a02,\ \textcolor{keywordtype}{float}\ a03,}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ a10,\ \textcolor{keywordtype}{float}\ a11,\ \textcolor{keywordtype}{float}\ a12,\ \textcolor{keywordtype}{float}\ a13,}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ a20,\ \textcolor{keywordtype}{float}\ a21,\ \textcolor{keywordtype}{float}\ a22,\ \textcolor{keywordtype}{float}\ a23,}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ a30,\ \textcolor{keywordtype}{float}\ a31,\ \textcolor{keywordtype}{float}\ a32,\ \textcolor{keywordtype}{float}\ a33\ );}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00412\ \ \ \textcolor{comment}{//\ Assignment\ operators}}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00414\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \&operator\ \ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&m);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ assignment\ of\ a\ mat4}}
+\DoxyCodeLine{00415\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \&operator\ +=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&m);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ incrementation\ by\ a\ mat4}}
+\DoxyCodeLine{00416\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \&operator\ -\/=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&m);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ decrementation\ by\ a\ mat4}}
+\DoxyCodeLine{00417\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \&operator\ *=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ multiplication\ by\ a\ constant}}
+\DoxyCodeLine{00418\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \&operator\ /=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \textcolor{comment}{//\ division\ by\ a\ constant}}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \ \ \textcolor{comment}{//\ special\ functions}}
+\DoxyCodeLine{00421\ }
+\DoxyCodeLine{00422\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \ transpose()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ transpose}}
+\DoxyCodeLine{00423\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \ inverse()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ inverse}}
+\DoxyCodeLine{00424\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \&apply(V\_FCT\_PTR\ fct);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ apply\ a\ func.\ to\ each\ element}}
+\DoxyCodeLine{00425\ }
+\DoxyCodeLine{00426\ \ \ \textcolor{keywordtype}{void}\ \ print(FILE\ *file,\ \textcolor{keyword}{const}\ std::string\ \&name)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ print\ matrix\ to\ a\ file}}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00428\ \ \ \mbox{\hyperlink{classvec4}{vec4}}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i);\ \ \ \ \ \ \ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00429\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i)\ \textcolor{keyword}{const};\ \textcolor{comment}{//\ indexing}}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \ \ \textcolor{keywordtype}{void}\ \ swap\_rows(\textcolor{keywordtype}{int}\ i,\ \textcolor{keywordtype}{int}\ j);\ \textcolor{comment}{//\ swap\ rows\ i\ and\ j}}
+\DoxyCodeLine{00432\ \ \ \textcolor{keywordtype}{void}\ \ swap\_cols(\textcolor{keywordtype}{int}\ i,\ \textcolor{keywordtype}{int}\ j);\ \textcolor{comment}{//\ swap\ cols\ i\ and\ j}}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \ \ \textcolor{comment}{//\ friends}}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00436\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/m1}}
+\DoxyCodeLine{00437\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ +\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ +\ m2}}
+\DoxyCodeLine{00438\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ -\/\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ -\/\ m2}}
+\DoxyCodeLine{00439\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ *\ m2}}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ *\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ m1\ *\ 4.0}}
+\DoxyCodeLine{00441\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ *\ \ (\textcolor{keywordtype}{float}\ d,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 4.0\ *\ m1}}
+\DoxyCodeLine{00442\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classmat4}{mat4}}\ operator\ /\ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ m1\ /\ 3.0}}
+\DoxyCodeLine{00443\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ ==\ m2\ ?}}
+\DoxyCodeLine{00444\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ \ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&b);\ \ \ \ \ \ \textcolor{comment}{//\ m1\ !=\ m2\ ?}}
+\DoxyCodeLine{00445\ \ \ \textcolor{comment}{//friend\ ostream\&\ operator\ <<\ (ostream\&\ s,\ mat4\&\ m);\ \ \ \ \ \ \ \ \ //\ output\ to\ stream}}
+\DoxyCodeLine{00446\ \ \ \textcolor{comment}{//friend\ istream\&\ operator\ >>\ (istream\&\ s,\ mat4\&\ m);\ \ \ \ \ \ \ \ \ //\ input\ from\ strm.}}
+\DoxyCodeLine{00447\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(\mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \mbox{\hyperlink{classmat4}{mat4}}\ \&b);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ swap\ m1\ \&\ m2}}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \ \ \textcolor{comment}{//\ necessary\ friend\ declarations}}
+\DoxyCodeLine{00450\ }
+\DoxyCodeLine{00451\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec4}{vec4}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00452\ \ \ \textcolor{comment}{//friend\ vec4\ operator\ *\ (const\ vec4\&\ v,\ const\ mat4\&\ a);\ \ \ \ //\ linear\ transform}}
+\DoxyCodeLine{00453\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00454\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classvec3}{vec3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a);\ \ \ \ \ \ \textcolor{comment}{//\ linear\ transform}}
+\DoxyCodeLine{00455\ \};}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \textcolor{comment}{/****************************************************************}}
+\DoxyCodeLine{00458\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00459\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ 2D\ functions\ and\ 3D\ functions\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00460\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00461\ \textcolor{comment}{\ ****************************************************************/}}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \mbox{\hyperlink{classmat3}{mat3}}\ identity2D\ \ \ ();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ identity\ 2D}}
+\DoxyCodeLine{00464\ \mbox{\hyperlink{classmat3}{mat3}}\ translation2D(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ translation\ 2D}}
+\DoxyCodeLine{00465\ \mbox{\hyperlink{classmat3}{mat3}}\ rotation2D\ \ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&Center,\ \textcolor{keywordtype}{float}\ angleDeg);\ \textcolor{comment}{//\ rotation\ 2D}}
+\DoxyCodeLine{00466\ \mbox{\hyperlink{classmat3}{mat3}}\ scaling2D\ \ \ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&scaleVector);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ scaling\ 2D}}
+\DoxyCodeLine{00467\ \mbox{\hyperlink{classmat4}{mat4}}\ identity3D\ \ \ ();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ identity\ 3D}}
+\DoxyCodeLine{00468\ \mbox{\hyperlink{classmat4}{mat4}}\ translation3D(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ translation\ 3D}}
+\DoxyCodeLine{00469\ \mbox{\hyperlink{classmat4}{mat4}}\ rotation3D\ \ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&Axis,\ \textcolor{keywordtype}{float}\ angleDeg);\ \ \ \textcolor{comment}{//\ rotation\ 3D}}
+\DoxyCodeLine{00470\ \mbox{\hyperlink{classmat4}{mat4}}\ rotation3Drad(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&Axis,\ \textcolor{keywordtype}{float}\ angleRad);\ \ \ \textcolor{comment}{//\ rotation\ 3D}}
+\DoxyCodeLine{00471\ \mbox{\hyperlink{classmat4}{mat4}}\ scaling3D\ \ \ \ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&scaleVector);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ scaling\ 3D}}
+\DoxyCodeLine{00472\ \mbox{\hyperlink{classmat4}{mat4}}\ perspective3D(\textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ perspective\ 3D}}
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00474\ \mbox{\hyperlink{classvec3}{vec3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a);}
+\DoxyCodeLine{00475\ \mbox{\hyperlink{classvec2}{vec2}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat3}{mat3}}\ \&a);}
+\DoxyCodeLine{00476\ \mbox{\hyperlink{classvec3}{vec3}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a);}
+\DoxyCodeLine{00477\ \mbox{\hyperlink{classvec4}{vec4}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec4}{vec4}}\ \&v,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classmat4}{mat4}}\ \&a);}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

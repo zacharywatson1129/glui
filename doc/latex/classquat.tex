@@ -1,0 +1,131 @@
+\hypertarget{classquat}{}\doxysection{quat Class Reference}
+\label{classquat}\index{quat@{quat}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquat_a5284f92399e537ee18cd71980ca1a7c3}\label{classquat_a5284f92399e537ee18cd71980ca1a7c3}} 
+{\bfseries quat} (float x, float y, float z, float w)
+\item 
+\mbox{\Hypertarget{classquat_ab21fb1fd605aed4867858a197722f9e6}\label{classquat_ab21fb1fd605aed4867858a197722f9e6}} 
+{\bfseries quat} (const \mbox{\hyperlink{classvec3}{vec3}} \&v, float s)
+\item 
+\mbox{\Hypertarget{classquat_ad6c0eb5b08a1c62013001088ec2230d5}\label{classquat_ad6c0eb5b08a1c62013001088ec2230d5}} 
+{\bfseries quat} (float s, const \mbox{\hyperlink{classvec3}{vec3}} \&v)
+\item 
+\mbox{\Hypertarget{classquat_ab455374c3c347698ede47134b976c2ba}\label{classquat_ab455374c3c347698ede47134b976c2ba}} 
+{\bfseries quat} (const float $\ast$d)
+\item 
+\mbox{\Hypertarget{classquat_a3d299e88dc443d98b586a8270087352e}\label{classquat_a3d299e88dc443d98b586a8270087352e}} 
+{\bfseries quat} (const double $\ast$f)
+\item 
+\mbox{\Hypertarget{classquat_a1725a31a3c580bc4e9e2b5af02cbfbaf}\label{classquat_a1725a31a3c580bc4e9e2b5af02cbfbaf}} 
+{\bfseries quat} (const \mbox{\hyperlink{classquat}{quat}} \&q)
+\item 
+\mbox{\Hypertarget{classquat_a21d40d57d0dd92d71ac7b3fd797dbb71}\label{classquat_a21d40d57d0dd92d71ac7b3fd797dbb71}} 
+\mbox{\hyperlink{classquat}{quat}} \& {\bfseries operator=} (const \mbox{\hyperlink{classquat}{quat}} \&v)
+\item 
+\mbox{\Hypertarget{classquat_a1b636bf3f0ef7bb6c95bb307a3329383}\label{classquat_a1b636bf3f0ef7bb6c95bb307a3329383}} 
+\mbox{\hyperlink{classquat}{quat}} \& {\bfseries operator+=} (const \mbox{\hyperlink{classquat}{quat}} \&v)
+\item 
+\mbox{\Hypertarget{classquat_af4ab117c98aec360e1e2b23aea7995ac}\label{classquat_af4ab117c98aec360e1e2b23aea7995ac}} 
+\mbox{\hyperlink{classquat}{quat}} \& {\bfseries operator-\/=} (const \mbox{\hyperlink{classquat}{quat}} \&v)
+\item 
+\mbox{\Hypertarget{classquat_a6b3e9776ebe0f1f515beae6d0d5a5d67}\label{classquat_a6b3e9776ebe0f1f515beae6d0d5a5d67}} 
+\mbox{\hyperlink{classquat}{quat}} \& {\bfseries operator$\ast$=} (float d)
+\item 
+\mbox{\Hypertarget{classquat_a236bf51e0e0638d38321192857709a45}\label{classquat_a236bf51e0e0638d38321192857709a45}} 
+\mbox{\hyperlink{classquat}{quat}} \& {\bfseries operator/=} (float d)
+\item 
+\mbox{\Hypertarget{classquat_a85c8236a7ea0bee3ea8374f6898560e5}\label{classquat_a85c8236a7ea0bee3ea8374f6898560e5}} 
+float {\bfseries length} () const
+\item 
+\mbox{\Hypertarget{classquat_ae16813b2e8ed2b56203b75d94a471021}\label{classquat_ae16813b2e8ed2b56203b75d94a471021}} 
+float {\bfseries length2} () const
+\item 
+\mbox{\Hypertarget{classquat_addbd7ad7b60a9b985a60391cde6c0065}\label{classquat_addbd7ad7b60a9b985a60391cde6c0065}} 
+\mbox{\hyperlink{classquat}{quat}} \& {\bfseries apply} (V\+\_\+\+FCT\+\_\+\+PTR fct)
+\item 
+\mbox{\Hypertarget{classquat_a2556b3bdc2dfadf4b30c13d5e931b89b}\label{classquat_a2556b3bdc2dfadf4b30c13d5e931b89b}} 
+\mbox{\hyperlink{classvec3}{vec3}} {\bfseries xform} (const \mbox{\hyperlink{classvec3}{vec3}} \&v)
+\item 
+\mbox{\Hypertarget{classquat_ac60fa0ef54ef205c6cf5788a88ca93ea}\label{classquat_ac60fa0ef54ef205c6cf5788a88ca93ea}} 
+\mbox{\hyperlink{classmat4}{mat4}} {\bfseries to\+\_\+mat4} () const
+\item 
+\mbox{\Hypertarget{classquat_a80f8f0458640fbb720e43f18312b03b0}\label{classquat_a80f8f0458640fbb720e43f18312b03b0}} 
+void {\bfseries set\+\_\+angle} (float f)
+\item 
+\mbox{\Hypertarget{classquat_a8861fff3cf3e4dbc76c472dd0605efd7}\label{classquat_a8861fff3cf3e4dbc76c472dd0605efd7}} 
+void {\bfseries scale\+\_\+angle} (float f)
+\item 
+\mbox{\Hypertarget{classquat_a061ae8fc56f7c3a91c26077e07d9a570}\label{classquat_a061ae8fc56f7c3a91c26077e07d9a570}} 
+float {\bfseries get\+\_\+angle} () const
+\item 
+\mbox{\Hypertarget{classquat_ac23f59c1ddd35fa39fd5fce4f3046b31}\label{classquat_ac23f59c1ddd35fa39fd5fce4f3046b31}} 
+\mbox{\hyperlink{classvec3}{vec3}} {\bfseries get\+\_\+axis} () const
+\item 
+\mbox{\Hypertarget{classquat_a116ee569959005154e7c85abcf527689}\label{classquat_a116ee569959005154e7c85abcf527689}} 
+void {\bfseries print} (FILE $\ast$file, const std\+::string \&name) const
+\item 
+\mbox{\Hypertarget{classquat_a82a6bcc7401e36998aed011018705b96}\label{classquat_a82a6bcc7401e36998aed011018705b96}} 
+float \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i)
+\item 
+\mbox{\Hypertarget{classquat_aacd3e124fc95c384bee2df115ee8dbf1}\label{classquat_aacd3e124fc95c384bee2df115ee8dbf1}} 
+const float \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (int i) const
+\item 
+\mbox{\Hypertarget{classquat_a8e2e0b7557155d3ec789847cc6cc9404}\label{classquat_a8e2e0b7557155d3ec789847cc6cc9404}} 
+void {\bfseries set} (float x, float y, float z)
+\item 
+\mbox{\Hypertarget{classquat_a7a82f8b8a507699a54aaf57dabd89da9}\label{classquat_a7a82f8b8a507699a54aaf57dabd89da9}} 
+void {\bfseries set} (const \mbox{\hyperlink{classvec3}{vec3}} \&v, float s)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquat_a2448ee0f87a5493b1765f1991d844f57}\label{classquat_a2448ee0f87a5493b1765f1991d844f57}} 
+\mbox{\hyperlink{classvec3}{vec3}} {\bfseries v}
+\item 
+\mbox{\Hypertarget{classquat_aca7e4a2b5505ba75ec3f493cfccc98a2}\label{classquat_aca7e4a2b5505ba75ec3f493cfccc98a2}} 
+float {\bfseries s}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classquat_a9466a3c3e5a85c936f467f275c721932}\label{classquat_a9466a3c3e5a85c936f467f275c721932}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries operator-\/} (const \mbox{\hyperlink{classquat}{quat}} \&v)
+\item 
+\mbox{\Hypertarget{classquat_a235a2a11770cbc76e184c8211d640c0b}\label{classquat_a235a2a11770cbc76e184c8211d640c0b}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries operator+} (const \mbox{\hyperlink{classquat}{quat}} \&a, const \mbox{\hyperlink{classquat}{quat}} \&b)
+\item 
+\mbox{\Hypertarget{classquat_ab215b6f784e4983b4bb71a9f42540b52}\label{classquat_ab215b6f784e4983b4bb71a9f42540b52}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries operator-\/} (const \mbox{\hyperlink{classquat}{quat}} \&a, const \mbox{\hyperlink{classquat}{quat}} \&b)
+\item 
+\mbox{\Hypertarget{classquat_a795c816e68796b731cb52f01ced47638}\label{classquat_a795c816e68796b731cb52f01ced47638}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{classquat}{quat}} \&a, float d)
+\item 
+\mbox{\Hypertarget{classquat_af51cecd97947dac527ea03cd6fe2a2ad}\label{classquat_af51cecd97947dac527ea03cd6fe2a2ad}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries operator$\ast$} (float d, const \mbox{\hyperlink{classquat}{quat}} \&a)
+\item 
+\mbox{\Hypertarget{classquat_a3ac523542b36c05f475f9a45b7ce2014}\label{classquat_a3ac523542b36c05f475f9a45b7ce2014}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries operator$\ast$} (const \mbox{\hyperlink{classquat}{quat}} \&a, const \mbox{\hyperlink{classquat}{quat}} \&b)
+\item 
+\mbox{\Hypertarget{classquat_a9c17217add9be473cadee03560304295}\label{classquat_a9c17217add9be473cadee03560304295}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries operator/} (const \mbox{\hyperlink{classquat}{quat}} \&a, float d)
+\item 
+\mbox{\Hypertarget{classquat_a6fe03a2358666bc051e62896e7948f5c}\label{classquat_a6fe03a2358666bc051e62896e7948f5c}} 
+int {\bfseries operator==} (const \mbox{\hyperlink{classquat}{quat}} \&a, const \mbox{\hyperlink{classquat}{quat}} \&b)
+\item 
+\mbox{\Hypertarget{classquat_a76b6b58902bf431c7c193e1720b0b182}\label{classquat_a76b6b58902bf431c7c193e1720b0b182}} 
+int {\bfseries operator!=} (const \mbox{\hyperlink{classquat}{quat}} \&a, const \mbox{\hyperlink{classquat}{quat}} \&b)
+\item 
+\mbox{\Hypertarget{classquat_a465e9ab76658bed899ad8095a17647c0}\label{classquat_a465e9ab76658bed899ad8095a17647c0}} 
+void {\bfseries swap} (\mbox{\hyperlink{classquat}{quat}} \&a, \mbox{\hyperlink{classquat}{quat}} \&b)
+\item 
+\mbox{\Hypertarget{classquat_a788864b84ce05a4c86cbd7edcd5adb24}\label{classquat_a788864b84ce05a4c86cbd7edcd5adb24}} 
+\mbox{\hyperlink{classquat}{quat}} {\bfseries prod} (const \mbox{\hyperlink{classquat}{quat}} \&a, const \mbox{\hyperlink{classquat}{quat}} \&b)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/zach/\+Documents/glui/src/quaternion.\+h\item 
+/home/zach/\+Documents/glui/src/quaternion.\+cpp\end{DoxyCompactItemize}

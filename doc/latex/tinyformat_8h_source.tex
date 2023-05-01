@@ -1,0 +1,1013 @@
+\hypertarget{tinyformat_8h_source}{}\doxysection{tinyformat.\+h}
+\label{tinyformat_8h_source}\index{/home/zach/Documents/glui/src/tinyformat.h@{/home/zach/Documents/glui/src/tinyformat.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ tinyformat.h}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ Copyright\ (C)\ 2011,\ Chris\ Foster\ [chris42f\ (at)\ gmail\ (d0t)\ com]}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Boost\ Software\ License\ -\/\ Version\ 1.0}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ or\ organization}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ obtaining\ a\ copy\ of\ the\ software\ and\ accompanying\ documentation\ covered\ by}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ this\ license\ (the\ "{}Software"{})\ to\ use,\ reproduce,\ display,\ distribute,}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ execute,\ and\ transmit\ the\ Software,\ and\ to\ prepare\ derivative\ works\ of\ the}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ Software,\ and\ to\ permit\ third-\/parties\ to\ whom\ the\ Software\ is\ furnished\ to}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ do\ so,\ all\ subject\ to\ the\ following:}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ The\ copyright\ notices\ in\ the\ Software\ and\ this\ entire\ statement,\ including}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ the\ above\ license\ grant,\ this\ restriction\ and\ the\ following\ disclaimer,}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ must\ be\ included\ in\ all\ copies\ of\ the\ Software,\ in\ whole\ or\ in\ part,\ and}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ all\ derivative\ works\ of\ the\ Software,\ unless\ such\ copies\ or\ derivative}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ works\ are\ solely\ in\ the\ form\ of\ machine-\/executable\ object\ code\ generated\ by}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ a\ source\ language\ processor.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{//}}
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ IMPLIED,\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE,\ TITLE\ AND\ NON-\/INFRINGEMENT.\ IN\ NO\ EVENT}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ SHALL\ THE\ COPYRIGHT\ HOLDERS\ OR\ ANYONE\ DISTRIBUTING\ THE\ SOFTWARE\ BE\ LIABLE}}
+\DoxyCodeLine{00024\ \textcolor{comment}{//\ FOR\ ANY\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER\ IN\ CONTRACT,\ TORT\ OR\ OTHERWISE,}}
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ ARISING\ FROM,\ OUT\ OF\ OR\ IN\ CONNECTION\ WITH\ THE\ SOFTWARE\ OR\ THE\ USE\ OR\ OTHER}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ Tinyformat:\ A\ minimal\ type\ safe\ printf\ replacement}}
+\DoxyCodeLine{00030\ \textcolor{comment}{//}}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ tinyformat.h\ is\ a\ type\ safe\ printf\ replacement\ library\ in\ a\ single\ C++}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ header\ file.\ \ Design\ goals\ include:}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//}}
+\DoxyCodeLine{00034\ \textcolor{comment}{//\ *\ Type\ safety\ and\ extensibility\ for\ user\ defined\ types.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{//\ *\ C99\ printf()\ compatibility,\ to\ the\ extent\ possible\ using\ std::ostream}}
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ *\ Simplicity\ and\ minimalism.\ \ A\ single\ header\ file\ to\ include\ and\ distribute}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ \ \ with\ your\ projects.}}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ *\ Augment\ rather\ than\ replace\ the\ standard\ stream\ formatting\ mechanism}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ *\ C++98\ support,\ with\ optional\ C++11\ niceties}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//}}
+\DoxyCodeLine{00042\ \textcolor{comment}{//\ Main\ interface\ example\ usage}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00044\ \textcolor{comment}{//}}
+\DoxyCodeLine{00045\ \textcolor{comment}{//\ To\ print\ a\ date\ to\ std::cout:}}
+\DoxyCodeLine{00046\ \textcolor{comment}{//}}
+\DoxyCodeLine{00047\ \textcolor{comment}{//\ \ \ std::string\ weekday\ =\ "{}Wednesday"{};}}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ \ \ const\ char*\ month\ =\ "{}July"{};}}
+\DoxyCodeLine{00049\ \textcolor{comment}{//\ \ \ size\_t\ day\ =\ 27;}}
+\DoxyCodeLine{00050\ \textcolor{comment}{//\ \ \ long\ hour\ =\ 14;}}
+\DoxyCodeLine{00051\ \textcolor{comment}{//\ \ \ int\ min\ =\ 44;}}
+\DoxyCodeLine{00052\ \textcolor{comment}{//}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ \ tfm::printf("{}\%s,\ \%s\ \%d,\ \%.2d:\%.2d\(\backslash\)n"{},\ weekday,\ month,\ day,\ hour,\ min);}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ The\ strange\ types\ here\ emphasize\ the\ type\ safety\ of\ the\ interface;\ it\ is}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ possible\ to\ print\ a\ std::string\ using\ the\ "{}\%s"{}\ conversion,\ and\ a}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ size\_t\ using\ the\ "{}\%d"{}\ conversion.\ \ A\ similar\ result\ could\ be\ achieved}}
+\DoxyCodeLine{00058\ \textcolor{comment}{//\ using\ either\ of\ the\ tfm::format()\ functions.\ \ One\ prints\ on\ a\ user\ provided}}
+\DoxyCodeLine{00059\ \textcolor{comment}{//\ stream:}}
+\DoxyCodeLine{00060\ \textcolor{comment}{//}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ \ \ tfm::format(std::cerr,\ "{}\%s,\ \%s\ \%d,\ \%.2d:\%.2d\(\backslash\)n"{},}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ weekday,\ month,\ day,\ hour,\ min);}}
+\DoxyCodeLine{00063\ \textcolor{comment}{//}}
+\DoxyCodeLine{00064\ \textcolor{comment}{//\ The\ other\ returns\ a\ std::string:}}
+\DoxyCodeLine{00065\ \textcolor{comment}{//}}
+\DoxyCodeLine{00066\ \textcolor{comment}{//\ \ \ std::string\ date\ =\ tfm::format("{}\%s,\ \%s\ \%d,\ \%.2d:\%.2d\(\backslash\)n"{},}}
+\DoxyCodeLine{00067\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ weekday,\ month,\ day,\ hour,\ min);}}
+\DoxyCodeLine{00068\ \textcolor{comment}{//\ \ \ std::cout\ <<\ date;}}
+\DoxyCodeLine{00069\ \textcolor{comment}{//}}
+\DoxyCodeLine{00070\ \textcolor{comment}{//\ These\ are\ the\ three\ primary\ interface\ functions.\ \ There\ is\ also\ a}}
+\DoxyCodeLine{00071\ \textcolor{comment}{//\ convenience\ function\ printfln()\ which\ appends\ a\ newline\ to\ the\ usual\ result}}
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ of\ printf()\ for\ super\ simple\ logging.}}
+\DoxyCodeLine{00073\ \textcolor{comment}{//}}
+\DoxyCodeLine{00074\ \textcolor{comment}{//}}
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ User\ defined\ format\ functions}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//}}
+\DoxyCodeLine{00078\ \textcolor{comment}{//\ Simulating\ variadic\ templates\ in\ C++98\ is\ pretty\ painful\ since\ it\ requires}}
+\DoxyCodeLine{00079\ \textcolor{comment}{//\ writing\ out\ the\ same\ function\ for\ each\ desired\ number\ of\ arguments.\ \ To\ make}}
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ this\ bearable\ tinyformat\ comes\ with\ a\ set\ of\ macros\ which\ are\ used}}
+\DoxyCodeLine{00081\ \textcolor{comment}{//\ internally\ to\ generate\ the\ API,\ but\ which\ may\ also\ be\ used\ in\ user\ code.}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ The\ three\ macros\ TINYFORMAT\_ARGTYPES(n),\ TINYFORMAT\_VARARGS(n)\ and}}
+\DoxyCodeLine{00084\ \textcolor{comment}{//\ TINYFORMAT\_PASSARGS(n)\ will\ generate\ a\ list\ of\ n\ argument\ types,}}
+\DoxyCodeLine{00085\ \textcolor{comment}{//\ type/name\ pairs\ and\ argument\ names\ respectively\ when\ called\ with\ an\ integer}}
+\DoxyCodeLine{00086\ \textcolor{comment}{//\ n\ between\ 1\ and\ 16.\ \ We\ can\ use\ these\ to\ define\ a\ macro\ which\ generates\ the}}
+\DoxyCodeLine{00087\ \textcolor{comment}{//\ desired\ user\ defined\ function\ with\ n\ arguments.\ \ To\ generate\ all\ 16\ user}}
+\DoxyCodeLine{00088\ \textcolor{comment}{//\ defined\ function\ bodies,\ use\ the\ macro\ TINYFORMAT\_FOREACH\_ARGNUM.\ \ For\ an}}
+\DoxyCodeLine{00089\ \textcolor{comment}{//\ example,\ see\ the\ implementation\ of\ printf()\ at\ the\ end\ of\ the\ source\ file.}}
+\DoxyCodeLine{00090\ \textcolor{comment}{//}}
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ Sometimes\ it's\ useful\ to\ be\ able\ to\ pass\ a\ list\ of\ format\ arguments\ through}}
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ to\ a\ non-\/template\ function.\ \ The\ FormatList\ class\ is\ provided\ as\ a\ way\ to\ do}}
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ this\ by\ storing\ the\ argument\ list\ in\ a\ type-\/opaque\ way.\ \ Continuing\ the}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ example\ from\ above,\ we\ construct\ a\ FormatList\ using\ makeFormatList():}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ \ \ FormatListRef\ formatList\ =\ tfm::makeFormatList(weekday,\ month,\ day,\ hour,\ min);}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ The\ format\ list\ can\ now\ be\ passed\ into\ any\ non-\/template\ function\ and\ used}}
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ via\ a\ call\ to\ the\ vformat()\ function:}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ \ \ tfm::vformat(std::cout,\ "{}\%s,\ \%s\ \%d,\ \%.2d:\%.2d\(\backslash\)n"{},\ formatList);}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ Additional\ API\ information}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ Error\ handling:\ Define\ TINYFORMAT\_ERROR\ to\ customize\ the\ error\ handling\ for}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ format\ strings\ which\ are\ unsupported\ or\ have\ the\ wrong\ number\ of\ format}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ specifiers\ (calls\ assert()\ by\ default).}}
+\DoxyCodeLine{00110\ \textcolor{comment}{//}}
+\DoxyCodeLine{00111\ \textcolor{comment}{//\ User\ defined\ types:\ Uses\ operator<<\ for\ user\ defined\ types\ by\ default.}}
+\DoxyCodeLine{00112\ \textcolor{comment}{//\ Overload\ formatValue()\ for\ more\ control.}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#ifndef\ TINYFORMAT\_H\_INCLUDED}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_H\_INCLUDED}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{namespace\ }tinyformat\ \{\}}
+\DoxyCodeLine{00119\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00120\ \textcolor{comment}{//\ Config\ section.\ \ Customize\ to\ your\ liking!}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ Namespace\ alias\ to\ encourage\ brevity}}
+\DoxyCodeLine{00123\ \textcolor{keyword}{namespace\ }tfm\ =\ tinyformat;}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{comment}{//\ Error\ handling;\ calls\ assert()\ by\ default.}}
+\DoxyCodeLine{00126\ \textcolor{comment}{//\ \#define\ TINYFORMAT\_ERROR(reasonString)\ your\_error\_handler(reasonString)}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \textcolor{comment}{//\ Define\ for\ C++11\ variadic\ templates\ which\ make\ the\ code\ shorter\ \&\ more}}
+\DoxyCodeLine{00129\ \textcolor{comment}{//\ general.\ \ If\ you\ don't\ define\ this,\ C++11\ support\ is\ autodetected\ below.}}
+\DoxyCodeLine{00130\ \textcolor{comment}{//\ \#define\ TINYFORMAT\_USE\_VARIADIC\_TEMPLATES}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00134\ \textcolor{comment}{//\ Implementation\ details.}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#include\ <cassert>}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#ifndef\ TINYFORMAT\_ERROR}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#\ \ \ define\ TINYFORMAT\_ERROR(reason)\ assert(0\ \&\&\ reason)}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#if\ !defined(TINYFORMAT\_USE\_VARIADIC\_TEMPLATES)\ \&\&\ !defined(TINYFORMAT\_NO\_VARIADIC\_TEMPLATES)}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#\ \ \ ifdef\ \_\_GXX\_EXPERIMENTAL\_CXX0X\_\_}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ define\ TINYFORMAT\_USE\_VARIADIC\_TEMPLATES}}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#\ \ \ endif}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#if\ defined(\_\_GLIBCXX\_\_)\ \&\&\ \_\_GLIBCXX\_\_\ <\ 20080201}}
+\DoxyCodeLine{00151\ \textcolor{comment}{//\ \ std::showpos\ is\ broken\ on\ old\ libstdc++\ as\ provided\ with\ OSX.\ \ See}}
+\DoxyCodeLine{00152\ \textcolor{comment}{//\ \ http://gcc.gnu.org/ml/libstdc++/2007-\/11/msg00075.html}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#\ \ \ define\ TINYFORMAT\_OLD\_LIBSTDCPLUSPLUS\_WORKAROUND}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#ifdef\ \_\_APPLE\_\_}}
+\DoxyCodeLine{00157\ \textcolor{comment}{//\ Workaround\ OSX\ linker\ warning:\ xcode\ uses\ different\ default\ symbol}}
+\DoxyCodeLine{00158\ \textcolor{comment}{//\ visibilities\ for\ static\ libs\ vs\ executables\ (see\ issue\ \#25)}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#\ \ \ define\ TINYFORMAT\_HIDDEN\ \_\_attribute\_\_((visibility("{}hidden"{}})))}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#\ \ \ define\ TINYFORMAT\_HIDDEN}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{keyword}{namespace\ }tinyformat\ \{}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00167\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \textcolor{comment}{//\ Test\ whether\ type\ T1\ is\ convertible\ to\ type\ T2}}
+\DoxyCodeLine{00170\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00171\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1is__convertible}{is\_convertible}}}
+\DoxyCodeLine{00172\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ two\ types\ of\ different\ size}}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }fail\ \{\ \textcolor{keywordtype}{char}\ dummy[2];\ \};}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }succeed\ \{\ \textcolor{keywordtype}{char}\ dummy;\ \};}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Try\ to\ convert\ a\ T1\ to\ a\ T2\ by\ plugging\ into\ tryConvert}}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ fail\ tryConvert(...);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ succeed\ tryConvert(\textcolor{keyword}{const}\ T2\&);}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ T1\&\ makeT1();}
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Disable\ spurious\ loss\ of\ precision\ warnings\ in\ tryConvert(makeT1())}}
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ pragma\ warning(push)}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ pragma\ warning(disable:4244)}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ pragma\ warning(disable:4267)}}
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ endif}}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Standard\ trick:\ the\ (...)\ version\ of\ tryConvert\ will\ be\ chosen\ from}}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ overload\ set\ only\ if\ the\ version\ taking\ a\ T2\ doesn't\ match.}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Then\ we\ compare\ the\ sizes\ of\ the\ return\ types\ to\ check\ which}}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ function\ matched.\ \ Very\ neat,\ in\ a\ disgusting\ kind\ of\ way\ :)}}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ value\ =}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(tryConvert(makeT1()))\ ==\ \textcolor{keyword}{sizeof}(succeed);}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ ifdef\ \_MSC\_VER}}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ pragma\ warning(pop)}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ endif}}
+\DoxyCodeLine{00197\ \};}
+\DoxyCodeLine{00198\ }
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \textcolor{comment}{//\ Detect\ when\ a\ type\ is\ not\ a\ wchar\_t\ string}}
+\DoxyCodeLine{00201\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1is__wchar}{is\_wchar}}\ \{\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{int}\ tinyformat\_wchar\_is\_not\_supported;\ \};}
+\DoxyCodeLine{00202\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1is__wchar}{is\_wchar}}<wchar\_t*>\ \{\};}
+\DoxyCodeLine{00203\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1is__wchar}{is\_wchar}}<const\ wchar\_t*>\ \{\};}
+\DoxyCodeLine{00204\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ n>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1is__wchar}{is\_wchar}}<const\ wchar\_t[n]>\ \{\};}
+\DoxyCodeLine{00205\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ n>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1is__wchar}{is\_wchar}}<wchar\_t[n]>\ \{\};}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \textcolor{comment}{//\ Format\ the\ value\ by\ casting\ to\ type\ fmtT.\ \ This\ default\ implementation}}
+\DoxyCodeLine{00209\ \textcolor{comment}{//\ should\ never\ be\ called.}}
+\DoxyCodeLine{00210\ template<typename\ T,\ typename\ fmtT,\ bool\ convertible\ =\ is\_convertible<T,\ fmtT>::value>}
+\DoxyCodeLine{00211\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1formatValueAsType}{formatValueAsType}}}
+\DoxyCodeLine{00212\ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ invoke(std::ostream\&\ \textcolor{comment}{/*out*/},\ \textcolor{keyword}{const}\ T\&\ \textcolor{comment}{/*value*/})\ \{\ assert(0);\ \}}
+\DoxyCodeLine{00214\ \};}
+\DoxyCodeLine{00215\ \textcolor{comment}{//\ Specialized\ version\ for\ types\ that\ can\ actually\ be\ converted\ to\ fmtT,\ as}}
+\DoxyCodeLine{00216\ \textcolor{comment}{//\ indicated\ by\ the\ "{}convertible"{}\ template\ parameter.}}
+\DoxyCodeLine{00217\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}\ fmtT>}
+\DoxyCodeLine{00218\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1formatValueAsType}{formatValueAsType}}<T,fmtT,true>}
+\DoxyCodeLine{00219\ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ invoke(std::ostream\&\ out,\ \textcolor{keyword}{const}\ T\&\ value)}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \{\ out\ <<\ static\_cast<fmtT>(value);\ \}}
+\DoxyCodeLine{00222\ \};}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#ifdef\ TINYFORMAT\_OLD\_LIBSTDCPLUSPLUS\_WORKAROUND}}
+\DoxyCodeLine{00225\ template<typename\ T,\ bool\ convertible\ =\ is\_convertible<T,\ int>::value>}
+\DoxyCodeLine{00226\ \textcolor{keyword}{struct\ }formatZeroIntegerWorkaround}
+\DoxyCodeLine{00227\ \{}
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ invoke(std::ostream\&\ ,\ \textcolor{keyword}{const}\ T\&\ )\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00229\ \};}
+\DoxyCodeLine{00230\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00231\ \textcolor{keyword}{struct\ }formatZeroIntegerWorkaround<T,true>}
+\DoxyCodeLine{00232\ \{}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ invoke(std::ostream\&\ out,\ \textcolor{keyword}{const}\ T\&\ value)}
+\DoxyCodeLine{00234\ \ \ \ \ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value)\ ==\ 0\ \&\&\ out.flags()\ \&\ std::ios::showpos)}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ out\ <<\ \textcolor{stringliteral}{"{}+0"{}};}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ \};}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ TINYFORMAT\_OLD\_LIBSTDCPLUSPLUS\_WORKAROUND}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \textcolor{comment}{//\ Convert\ an\ arbitrary\ type\ to\ integer.\ \ The\ version\ with\ convertible=false}}
+\DoxyCodeLine{00246\ \textcolor{comment}{//\ throws\ an\ error.}}
+\DoxyCodeLine{00247\ template<typename\ T,\ bool\ convertible\ =\ is\_convertible<T,int>::value>}
+\DoxyCodeLine{00248\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1convertToInt}{convertToInt}}}
+\DoxyCodeLine{00249\ \{}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ invoke(\textcolor{keyword}{const}\ T\&\ \textcolor{comment}{/*value*/})}
+\DoxyCodeLine{00251\ \ \ \ \ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ Cannot\ convert\ from\ argument\ type\ to\ "{}}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}integer\ for\ use\ as\ variable\ width\ or\ precision"{}});}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ \};}
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ Specialization\ for\ convertToInt\ when\ conversion\ is\ possible}}
+\DoxyCodeLine{00258\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00259\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtinyformat_1_1detail_1_1convertToInt}{convertToInt}}<T,true>}
+\DoxyCodeLine{00260\ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ invoke(\textcolor{keyword}{const}\ T\&\ value)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(value);\ \}}
+\DoxyCodeLine{00262\ \};}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \textcolor{comment}{//\ Format\ at\ most\ ntrunc\ characters\ to\ the\ given\ stream.}}
+\DoxyCodeLine{00265\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00266\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ formatTruncated(std::ostream\&\ out,\ \textcolor{keyword}{const}\ T\&\ value,\ \textcolor{keywordtype}{int}\ ntrunc)}
+\DoxyCodeLine{00267\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ std::ostringstream\ tmp;}
+\DoxyCodeLine{00269\ \ \ \ \ tmp\ <<\ value;}
+\DoxyCodeLine{00270\ \ \ \ \ std::string\ result\ =\ tmp.str();}
+\DoxyCodeLine{00271\ \ \ \ \ out.write(result.c\_str(),\ (std::min)(ntrunc,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(result.size())));}
+\DoxyCodeLine{00272\ \}}
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_DEFINE\_FORMAT\_TRUNCATED\_CSTR(type)\ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00274\ \textcolor{preprocessor}{inline\ void\ formatTruncated(std::ostream\&\ out,\ type*\ value,\ int\ ntrunc)\ \(\backslash\)}}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\ \ \ \ std::streamsize\ len\ =\ 0;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\ \ \ \ while(len\ <\ ntrunc\ \&\&\ value[len]\ !=\ 0)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00278\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ ++len;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\ \ \ \ out.write(value,\ len);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\}}}
+\DoxyCodeLine{00281\ \textcolor{comment}{//\ Overload\ for\ const\ char*\ and\ char*.\ \ Could\ overload\ for\ signed\ \&\ unsigned}}
+\DoxyCodeLine{00282\ \textcolor{comment}{//\ char\ too,\ but\ these\ are\ technically\ unneeded\ for\ printf\ compatibility.}}
+\DoxyCodeLine{00283\ TINYFORMAT\_DEFINE\_FORMAT\_TRUNCATED\_CSTR(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char})}
+\DoxyCodeLine{00284\ TINYFORMAT\_DEFINE\_FORMAT\_TRUNCATED\_CSTR(\textcolor{keywordtype}{char})}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#undef\ TINYFORMAT\_DEFINE\_FORMAT\_TRUNCATED\_CSTR}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \}\ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00291\ \textcolor{comment}{//\ Variable\ formatting\ functions.\ \ May\ be\ overridden\ for\ user-\/defined\ types\ if}}
+\DoxyCodeLine{00292\ \textcolor{comment}{//\ desired.}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00306\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00307\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ formatValue(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \textcolor{comment}{/*fmtBegin*/},}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtEnd,\ \textcolor{keywordtype}{int}\ ntrunc,\ \textcolor{keyword}{const}\ T\&\ value)}
+\DoxyCodeLine{00309\ \{}
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#ifndef\ TINYFORMAT\_ALLOW\_WCHAR\_STRINGS}}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{comment}{//\ Since\ we\ don't\ support\ printing\ of\ wchar\_t\ using\ "{}\%ls"{},\ make\ it\ fail\ at}}
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{comment}{//\ compile\ time\ in\ preference\ to\ printing\ as\ a\ void*\ at\ runtime.}}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ detail::is\_wchar<T>::tinyformat\_wchar\_is\_not\_supported\ DummyType;}
+\DoxyCodeLine{00314\ \ \ \ \ (void)\ DummyType();\ \textcolor{comment}{//\ avoid\ unused\ type\ warning\ with\ gcc-\/4.8}}
+\DoxyCodeLine{00315\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{comment}{//\ The\ mess\ here\ is\ to\ support\ the\ \%c\ and\ \%p\ conversions:\ if\ these}}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{comment}{//\ conversions\ are\ active\ we\ try\ to\ convert\ the\ type\ to\ a\ char\ or\ const}}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{comment}{//\ void*\ respectively\ and\ format\ that\ instead\ of\ the\ value\ itself.\ \ For\ the}}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{comment}{//\ \%p\ conversion\ it's\ important\ to\ avoid\ dereferencing\ the\ pointer,\ which}}
+\DoxyCodeLine{00320\ \ \ \ \ \textcolor{comment}{//\ could\ otherwise\ lead\ to\ a\ crash\ when\ printing\ a\ dangling\ (const\ char*).}}
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ canConvertToChar\ =\ detail::is\_convertible<T,char>::value;}
+\DoxyCodeLine{00322\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ canConvertToVoidPtr\ =\ detail::is\_convertible<T,\ const\ void*>::value;}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keywordflow}{if}(canConvertToChar\ \&\&\ *(fmtEnd-\/1)\ ==\ \textcolor{charliteral}{'c'})}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ detail::formatValueAsType<T,\ char>::invoke(out,\ value);}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(canConvertToVoidPtr\ \&\&\ *(fmtEnd-\/1)\ ==\ \textcolor{charliteral}{'p'})}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ detail::formatValueAsType<T,\ const\ void*>::invoke(out,\ value);}
+\DoxyCodeLine{00327\ \textcolor{preprocessor}{\#ifdef\ TINYFORMAT\_OLD\_LIBSTDCPLUSPLUS\_WORKAROUND}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(detail::formatZeroIntegerWorkaround<T>::invoke(out,\ value))\ ;}
+\DoxyCodeLine{00329\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(ntrunc\ >=\ 0)}
+\DoxyCodeLine{00331\ \ \ \ \ \{}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Take\ care\ not\ to\ overread\ C\ strings\ in\ truncating\ conversions\ like}}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ "{}\%.4s"{}\ where\ at\ most\ 4\ characters\ may\ be\ read.}}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ detail::formatTruncated(out,\ value,\ ntrunc);}
+\DoxyCodeLine{00335\ \ \ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ out\ <<\ value;}
+\DoxyCodeLine{00338\ \}}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00341\ \textcolor{comment}{//\ Overloaded\ version\ for\ char\ types\ to\ support\ printing\ as\ an\ integer}}
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_DEFINE\_FORMATVALUE\_CHAR(charType)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00343\ \textcolor{preprocessor}{inline\ void\ formatValue(std::ostream\&\ out,\ const\ char*\ }\textcolor{comment}{/*fmtBegin*/}\textcolor{preprocessor}{,\ \ \(\backslash\)}}
+\DoxyCodeLine{00344\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ char*\ fmtEnd,\ int\ ,\ charType\ value)\ \(\backslash\)}}
+\DoxyCodeLine{00345\ \textcolor{preprocessor}{\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\ \ \ \ switch(*(fmtEnd-\/1))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00347\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00348\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ case\ 'u':\ case\ 'd':\ case\ 'i':\ case\ 'o':\ case\ 'X':\ case\ 'x':\ \ \ \(\backslash\)}}
+\DoxyCodeLine{00349\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ out\ <<\ static\_cast<int>(value);\ break;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00350\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ default:\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ out\ <<\ value;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ break;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00352\ \textcolor{preprocessor}{\ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00353\ \textcolor{preprocessor}{\}}}
+\DoxyCodeLine{00354\ \textcolor{comment}{//\ per\ 3.9.1:\ char,\ signed\ char\ and\ unsigned\ char\ are\ all\ distinct\ types}}
+\DoxyCodeLine{00355\ TINYFORMAT\_DEFINE\_FORMATVALUE\_CHAR(\textcolor{keywordtype}{char})}
+\DoxyCodeLine{00356\ TINYFORMAT\_DEFINE\_FORMATVALUE\_CHAR(\textcolor{keywordtype}{signed}\ \textcolor{keywordtype}{char})}
+\DoxyCodeLine{00357\ TINYFORMAT\_DEFINE\_FORMATVALUE\_CHAR(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char})}
+\DoxyCodeLine{00358\ \textcolor{preprocessor}{\#undef\ TINYFORMAT\_DEFINE\_FORMATVALUE\_CHAR}}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00361\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00362\ \textcolor{comment}{//\ Tools\ for\ emulating\ variadic\ templates\ in\ C++98.\ \ The\ basic\ idea\ here\ is}}
+\DoxyCodeLine{00363\ \textcolor{comment}{//\ stolen\ from\ the\ boost\ preprocessor\ metaprogramming\ library\ and\ cut\ down\ to}}
+\DoxyCodeLine{00364\ \textcolor{comment}{//\ be\ just\ general\ enough\ for\ what\ we\ need.}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES(n)\ TINYFORMAT\_ARGTYPES\_\ \#\#\ n}}
+\DoxyCodeLine{00367\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS(n)\ TINYFORMAT\_VARARGS\_\ \#\#\ n}}
+\DoxyCodeLine{00368\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS(n)\ TINYFORMAT\_PASSARGS\_\ \#\#\ n}}
+\DoxyCodeLine{00369\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL(n)\ TINYFORMAT\_PASSARGS\_TAIL\_\ \#\#\ n}}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \textcolor{comment}{//\ To\ keep\ it\ as\ transparent\ as\ possible,\ the\ macros\ below\ have\ been\ generated}}
+\DoxyCodeLine{00372\ \textcolor{comment}{//\ using\ python\ via\ the\ excellent\ cog.py\ code\ generation\ script.\ \ This\ avoids}}
+\DoxyCodeLine{00373\ \textcolor{comment}{//\ the\ need\ for\ a\ bunch\ of\ complex\ (but\ more\ general)\ preprocessor\ tricks\ as}}
+\DoxyCodeLine{00374\ \textcolor{comment}{//\ used\ in\ boost.preprocessor.}}
+\DoxyCodeLine{00375\ \textcolor{comment}{//}}
+\DoxyCodeLine{00376\ \textcolor{comment}{//\ To\ rerun\ the\ code\ generation\ in\ place,\ use\ `cog.py\ -\/r\ tinyformat.h`}}
+\DoxyCodeLine{00377\ \textcolor{comment}{//\ (see\ http://nedbatchelder.com/code/cog).\ \ Alternatively\ you\ can\ just\ create}}
+\DoxyCodeLine{00378\ \textcolor{comment}{//\ extra\ versions\ by\ hand.}}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ \textcolor{comment}{/*[[[cog}}
+\DoxyCodeLine{00381\ \textcolor{comment}{maxParams\ =\ 16}}
+\DoxyCodeLine{00382\ \textcolor{comment}{}}
+\DoxyCodeLine{00383\ \textcolor{comment}{def\ makeCommaSepLists(lineTemplate,\ elemTemplate,\ startInd=1):}}
+\DoxyCodeLine{00384\ \textcolor{comment}{\ \ \ \ for\ j\ in\ range(startInd,maxParams+1):}}
+\DoxyCodeLine{00385\ \textcolor{comment}{\ \ \ \ \ \ \ \ list\ =\ ',\ '.join([elemTemplate\ \%\ \{'i':i\}\ for\ i\ in\ range(startInd,j+1)])}}
+\DoxyCodeLine{00386\ \textcolor{comment}{\ \ \ \ \ \ \ \ cog.outl(lineTemplate\ \%\ \{'j':j,\ 'list':list\})}}
+\DoxyCodeLine{00387\ \textcolor{comment}{}}
+\DoxyCodeLine{00388\ \textcolor{comment}{makeCommaSepLists('\#define\ TINYFORMAT\_ARGTYPES\_\%(j)d\ \%(list)s',}}
+\DoxyCodeLine{00389\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 'class\ T\%(i)d')}}
+\DoxyCodeLine{00390\ \textcolor{comment}{}}
+\DoxyCodeLine{00391\ \textcolor{comment}{cog.outl()}}
+\DoxyCodeLine{00392\ \textcolor{comment}{makeCommaSepLists('\#define\ TINYFORMAT\_VARARGS\_\%(j)d\ \%(list)s',}}
+\DoxyCodeLine{00393\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 'const\ T\%(i)d\&\ v\%(i)d')}}
+\DoxyCodeLine{00394\ \textcolor{comment}{}}
+\DoxyCodeLine{00395\ \textcolor{comment}{cog.outl()}}
+\DoxyCodeLine{00396\ \textcolor{comment}{makeCommaSepLists('\#define\ TINYFORMAT\_PASSARGS\_\%(j)d\ \%(list)s',\ 'v\%(i)d')}}
+\DoxyCodeLine{00397\ \textcolor{comment}{}}
+\DoxyCodeLine{00398\ \textcolor{comment}{cog.outl()}}
+\DoxyCodeLine{00399\ \textcolor{comment}{cog.outl('\#define\ TINYFORMAT\_PASSARGS\_TAIL\_1')}}
+\DoxyCodeLine{00400\ \textcolor{comment}{makeCommaSepLists('\#define\ TINYFORMAT\_PASSARGS\_TAIL\_\%(j)d\ ,\ \%(list)s',}}
+\DoxyCodeLine{00401\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 'v\%(i)d',\ startInd\ =\ 2)}}
+\DoxyCodeLine{00402\ \textcolor{comment}{}}
+\DoxyCodeLine{00403\ \textcolor{comment}{cog.outl()}}
+\DoxyCodeLine{00404\ \textcolor{comment}{cog.outl('\#define\ TINYFORMAT\_FOREACH\_ARGNUM(m)\ \(\backslash\)\(\backslash\)\(\backslash\)n\ \ \ \ '\ +}}
+\DoxyCodeLine{00405\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ '\ '.join(['m(\%d)'\ \%\ (j,)\ for\ j\ in\ range(1,maxParams+1)]))}}
+\DoxyCodeLine{00406\ \textcolor{comment}{]]]*/}}
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_1\ class\ T1}}
+\DoxyCodeLine{00408\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_2\ class\ T1,\ class\ T2}}
+\DoxyCodeLine{00409\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_3\ class\ T1,\ class\ T2,\ class\ T3}}
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_4\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4}}
+\DoxyCodeLine{00411\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_5\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5}}
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_6\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6}}
+\DoxyCodeLine{00413\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_7\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7}}
+\DoxyCodeLine{00414\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_8\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8}}
+\DoxyCodeLine{00415\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_9\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9}}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_10\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9,\ class\ T10}}
+\DoxyCodeLine{00417\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_11\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9,\ class\ T10,\ class\ T11}}
+\DoxyCodeLine{00418\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_12\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9,\ class\ T10,\ class\ T11,\ class\ T12}}
+\DoxyCodeLine{00419\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_13\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9,\ class\ T10,\ class\ T11,\ class\ T12,\ class\ T13}}
+\DoxyCodeLine{00420\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_14\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9,\ class\ T10,\ class\ T11,\ class\ T12,\ class\ T13,\ class\ T14}}
+\DoxyCodeLine{00421\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_15\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9,\ class\ T10,\ class\ T11,\ class\ T12,\ class\ T13,\ class\ T14,\ class\ T15}}
+\DoxyCodeLine{00422\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_ARGTYPES\_16\ class\ T1,\ class\ T2,\ class\ T3,\ class\ T4,\ class\ T5,\ class\ T6,\ class\ T7,\ class\ T8,\ class\ T9,\ class\ T10,\ class\ T11,\ class\ T12,\ class\ T13,\ class\ T14,\ class\ T15,\ class\ T16}}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_1\ const\ T1\&\ v1}}
+\DoxyCodeLine{00425\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_2\ const\ T1\&\ v1,\ const\ T2\&\ v2}}
+\DoxyCodeLine{00426\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_3\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3}}
+\DoxyCodeLine{00427\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_4\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4}}
+\DoxyCodeLine{00428\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_5\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5}}
+\DoxyCodeLine{00429\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_6\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6}}
+\DoxyCodeLine{00430\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_7\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7}}
+\DoxyCodeLine{00431\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_8\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8}}
+\DoxyCodeLine{00432\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_9\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9}}
+\DoxyCodeLine{00433\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_10\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9,\ const\ T10\&\ v10}}
+\DoxyCodeLine{00434\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_11\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9,\ const\ T10\&\ v10,\ const\ T11\&\ v11}}
+\DoxyCodeLine{00435\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_12\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9,\ const\ T10\&\ v10,\ const\ T11\&\ v11,\ const\ T12\&\ v12}}
+\DoxyCodeLine{00436\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_13\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9,\ const\ T10\&\ v10,\ const\ T11\&\ v11,\ const\ T12\&\ v12,\ const\ T13\&\ v13}}
+\DoxyCodeLine{00437\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_14\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9,\ const\ T10\&\ v10,\ const\ T11\&\ v11,\ const\ T12\&\ v12,\ const\ T13\&\ v13,\ const\ T14\&\ v14}}
+\DoxyCodeLine{00438\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_15\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9,\ const\ T10\&\ v10,\ const\ T11\&\ v11,\ const\ T12\&\ v12,\ const\ T13\&\ v13,\ const\ T14\&\ v14,\ const\ T15\&\ v15}}
+\DoxyCodeLine{00439\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_VARARGS\_16\ const\ T1\&\ v1,\ const\ T2\&\ v2,\ const\ T3\&\ v3,\ const\ T4\&\ v4,\ const\ T5\&\ v5,\ const\ T6\&\ v6,\ const\ T7\&\ v7,\ const\ T8\&\ v8,\ const\ T9\&\ v9,\ const\ T10\&\ v10,\ const\ T11\&\ v11,\ const\ T12\&\ v12,\ const\ T13\&\ v13,\ const\ T14\&\ v14,\ const\ T15\&\ v15,\ const\ T16\&\ v16}}
+\DoxyCodeLine{00440\ }
+\DoxyCodeLine{00441\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_1\ v1}}
+\DoxyCodeLine{00442\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_2\ v1,\ v2}}
+\DoxyCodeLine{00443\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_3\ v1,\ v2,\ v3}}
+\DoxyCodeLine{00444\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_4\ v1,\ v2,\ v3,\ v4}}
+\DoxyCodeLine{00445\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_5\ v1,\ v2,\ v3,\ v4,\ v5}}
+\DoxyCodeLine{00446\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_6\ v1,\ v2,\ v3,\ v4,\ v5,\ v6}}
+\DoxyCodeLine{00447\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_7\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7}}
+\DoxyCodeLine{00448\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_8\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8}}
+\DoxyCodeLine{00449\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_9\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9}}
+\DoxyCodeLine{00450\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_10\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10}}
+\DoxyCodeLine{00451\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_11\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11}}
+\DoxyCodeLine{00452\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_12\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12}}
+\DoxyCodeLine{00453\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_13\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13}}
+\DoxyCodeLine{00454\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_14\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13,\ v14}}
+\DoxyCodeLine{00455\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_15\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13,\ v14,\ v15}}
+\DoxyCodeLine{00456\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_16\ v1,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13,\ v14,\ v15,\ v16}}
+\DoxyCodeLine{00457\ }
+\DoxyCodeLine{00458\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_1}}
+\DoxyCodeLine{00459\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_2\ ,\ v2}}
+\DoxyCodeLine{00460\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_3\ ,\ v2,\ v3}}
+\DoxyCodeLine{00461\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_4\ ,\ v2,\ v3,\ v4}}
+\DoxyCodeLine{00462\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_5\ ,\ v2,\ v3,\ v4,\ v5}}
+\DoxyCodeLine{00463\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_6\ ,\ v2,\ v3,\ v4,\ v5,\ v6}}
+\DoxyCodeLine{00464\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_7\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7}}
+\DoxyCodeLine{00465\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_8\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8}}
+\DoxyCodeLine{00466\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_9\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9}}
+\DoxyCodeLine{00467\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_10\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10}}
+\DoxyCodeLine{00468\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_11\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11}}
+\DoxyCodeLine{00469\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_12\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12}}
+\DoxyCodeLine{00470\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_13\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13}}
+\DoxyCodeLine{00471\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_14\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13,\ v14}}
+\DoxyCodeLine{00472\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_15\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13,\ v14,\ v15}}
+\DoxyCodeLine{00473\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_PASSARGS\_TAIL\_16\ ,\ v2,\ v3,\ v4,\ v5,\ v6,\ v7,\ v8,\ v9,\ v10,\ v11,\ v12,\ v13,\ v14,\ v15,\ v16}}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_FOREACH\_ARGNUM(m)\ \(\backslash\)}}
+\DoxyCodeLine{00476\ \textcolor{preprocessor}{\ \ \ \ m(1)\ m(2)\ m(3)\ m(4)\ m(5)\ m(6)\ m(7)\ m(8)\ m(9)\ m(10)\ m(11)\ m(12)\ m(13)\ m(14)\ m(15)\ m(16)}}
+\DoxyCodeLine{00477\ \textcolor{comment}{//[[[end]]]}}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \textcolor{comment}{//\ Type-\/opaque\ holder\ for\ an\ argument\ to\ format(),\ with\ associated\ actions\ on}}
+\DoxyCodeLine{00484\ \textcolor{comment}{//\ the\ type\ held\ as\ explicit\ function\ pointers.\ \ This\ allows\ FormatArg's\ for}}
+\DoxyCodeLine{00485\ \textcolor{comment}{//\ each\ argument\ to\ be\ allocated\ as\ a\ homogenous\ array\ inside\ FormatList}}
+\DoxyCodeLine{00486\ \textcolor{comment}{//\ whereas\ a\ naive\ implementation\ based\ on\ inheritance\ does\ not.}}
+\DoxyCodeLine{00487\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatArg}{FormatArg}}}
+\DoxyCodeLine{00488\ \{}
+\DoxyCodeLine{00489\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatArg}{FormatArg}}()\ \{\}}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatArg}{FormatArg}}(\textcolor{keyword}{const}\ T\&\ value)}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \ \ :\ m\_value(\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(\&value)),}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ m\_formatImpl(\&formatImpl<T>),}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \ \ \ \ m\_toIntImpl(\&toIntImpl<T>)}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \{\ \}}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ format(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtBegin,}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtEnd,\ \textcolor{keywordtype}{int}\ ntrunc)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00501\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \ \ \ \ m\_formatImpl(out,\ fmtBegin,\ fmtEnd,\ ntrunc,\ m\_value);}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00504\ }
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ toInt()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00506\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_toIntImpl(m\_value);}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00510\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ TINYFORMAT\_HIDDEN\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ formatImpl(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtBegin,}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtEnd,\ \textcolor{keywordtype}{int}\ ntrunc,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ value)}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \ \ formatValue(out,\ fmtBegin,\ fmtEnd,\ ntrunc,\ *\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }T*\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00517\ }
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ TINYFORMAT\_HIDDEN\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ toIntImpl(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ value)}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structtinyformat_1_1detail_1_1convertToInt}{convertToInt<T>::invoke}}(*\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }T*\textcolor{keyword}{>}(value));}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ m\_value;}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ void\ (*m\_formatImpl)(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtBegin,}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtEnd,\ \textcolor{keywordtype}{int}\ ntrunc,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ value);}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ int\ (*m\_toIntImpl)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ value);}
+\DoxyCodeLine{00528\ \};}
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00530\ }
+\DoxyCodeLine{00531\ \textcolor{comment}{//\ Parse\ and\ return\ an\ integer\ from\ the\ string\ c,\ as\ atoi()}}
+\DoxyCodeLine{00532\ \textcolor{comment}{//\ On\ return,\ c\ is\ set\ to\ one\ past\ the\ end\ of\ the\ integer.}}
+\DoxyCodeLine{00533\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ parseIntAndAdvance(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\&\ c)}
+\DoxyCodeLine{00534\ \{}
+\DoxyCodeLine{00535\ \ \ \ \ \textcolor{keywordtype}{int}\ i\ =\ 0;}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keywordflow}{for}(;*c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ *c\ <=\ \textcolor{charliteral}{'9'};\ ++c)}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ i\ =\ 10*i\ +\ (*c\ -\/\ \textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00538\ \ \ \ \ \textcolor{keywordflow}{return}\ i;}
+\DoxyCodeLine{00539\ \}}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00541\ \textcolor{comment}{//\ Print\ literal\ part\ of\ format\ string\ and\ return\ next\ format\ spec}}
+\DoxyCodeLine{00542\ \textcolor{comment}{//\ position.}}
+\DoxyCodeLine{00543\ \textcolor{comment}{//}}
+\DoxyCodeLine{00544\ \textcolor{comment}{//\ Skips\ over\ any\ occurrences\ of\ '\%\%',\ printing\ a\ literal\ '\%'\ to\ the}}
+\DoxyCodeLine{00545\ \textcolor{comment}{//\ output.\ \ The\ position\ of\ the\ first\ \%\ character\ of\ the\ next}}
+\DoxyCodeLine{00546\ \textcolor{comment}{//\ nontrivial\ format\ spec\ is\ returned,\ or\ the\ end\ of\ string.}}
+\DoxyCodeLine{00547\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ printFormatStringLiteral(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt)}
+\DoxyCodeLine{00548\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ c\ =\ fmt;}
+\DoxyCodeLine{00550\ \ \ \ \ \textcolor{keywordflow}{for}(;;\ ++c)}
+\DoxyCodeLine{00551\ \ \ \ \ \{}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(*c)}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'\(\backslash\)0'}:}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.write(fmt,\ c\ -\/\ fmt);}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'\%'}:}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.write(fmt,\ c\ -\/\ fmt);}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(*(c+1)\ !=\ \textcolor{charliteral}{'\%'})}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ for\ "{}\%\%"{},\ tack\ trailing\ \%\ onto\ next\ literal\ section.}}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fmt\ =\ ++c;}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00567\ \ \ \ \ \}}
+\DoxyCodeLine{00568\ \}}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \textcolor{comment}{//\ Parse\ a\ format\ string\ and\ set\ the\ stream\ state\ accordingly.}}
+\DoxyCodeLine{00572\ \textcolor{comment}{//}}
+\DoxyCodeLine{00573\ \textcolor{comment}{//\ The\ format\ mini-\/language\ recognized\ here\ is\ meant\ to\ be\ the\ one\ from\ C99,}}
+\DoxyCodeLine{00574\ \textcolor{comment}{//\ with\ the\ form\ "{}\%[flags][width][.precision][length]type"{}.}}
+\DoxyCodeLine{00575\ \textcolor{comment}{//}}
+\DoxyCodeLine{00576\ \textcolor{comment}{//\ Formatting\ options\ which\ can't\ be\ natively\ represented\ using\ the\ ostream}}
+\DoxyCodeLine{00577\ \textcolor{comment}{//\ state\ are\ returned\ in\ spacePadPositive\ (for\ space\ padded\ positive\ numbers)}}
+\DoxyCodeLine{00578\ \textcolor{comment}{//\ and\ ntrunc\ (for\ truncating\ conversions).\ \ argIndex\ is\ incremented\ if}}
+\DoxyCodeLine{00579\ \textcolor{comment}{//\ necessary\ to\ pull\ out\ variable\ width\ and\ precision\ .\ \ The\ function\ returns\ a}}
+\DoxyCodeLine{00580\ \textcolor{comment}{//\ pointer\ to\ the\ character\ after\ the\ end\ of\ the\ current\ format\ spec.}}
+\DoxyCodeLine{00581\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ streamStateFromFormat(std::ostream\&\ out,\ \textcolor{keywordtype}{bool}\&\ spacePadPositive,}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\&\ ntrunc,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtStart,}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ detail::FormatArg*\ formatters,}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\&\ argIndex,\ \textcolor{keywordtype}{int}\ numFormatters)}
+\DoxyCodeLine{00585\ \{}
+\DoxyCodeLine{00586\ \ \ \ \ \textcolor{keywordflow}{if}(*fmtStart\ !=\ \textcolor{charliteral}{'\%'})}
+\DoxyCodeLine{00587\ \ \ \ \ \{}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ Not\ enough\ conversion\ specifiers\ in\ format\ string"{}});}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ fmtStart;}
+\DoxyCodeLine{00590\ \ \ \ \ \}}
+\DoxyCodeLine{00591\ \ \ \ \ \textcolor{comment}{//\ Reset\ stream\ state\ to\ defaults.}}
+\DoxyCodeLine{00592\ \ \ \ \ out.width(0);}
+\DoxyCodeLine{00593\ \ \ \ \ out.precision(6);}
+\DoxyCodeLine{00594\ \ \ \ \ out.fill(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00595\ \ \ \ \ \textcolor{comment}{//\ Reset\ most\ flags;\ ignore\ irrelevant\ unitbuf\ \&\ skipws.}}
+\DoxyCodeLine{00596\ \ \ \ \ out.unsetf(std::ios::adjustfield\ |\ std::ios::basefield\ |}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ios::floatfield\ |\ std::ios::showbase\ |\ std::ios::boolalpha\ |}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::ios::showpoint\ |\ std::ios::showpos\ |\ std::ios::uppercase);}
+\DoxyCodeLine{00599\ \ \ \ \ \textcolor{keywordtype}{bool}\ precisionSet\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00600\ \ \ \ \ \textcolor{keywordtype}{bool}\ widthSet\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00601\ \ \ \ \ \textcolor{keywordtype}{int}\ widthExtra\ =\ 0;}
+\DoxyCodeLine{00602\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ c\ =\ fmtStart\ +\ 1;}
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{comment}{//\ 1)\ Parse\ flags}}
+\DoxyCodeLine{00604\ \ \ \ \ \textcolor{keywordflow}{for}(;;\ ++c)}
+\DoxyCodeLine{00605\ \ \ \ \ \{}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}(*c)}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'\#'}:}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::showpoint\ |\ std::ios::showbase);}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'0'}:}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ overridden\ by\ left\ alignment\ ('-\/'\ flag)}}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!(out.flags()\ \&\ std::ios::left))}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ internal\ padding\ so\ that\ numeric\ values\ are}}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ formatted\ correctly,\ eg\ -\/00010\ rather\ than\ 000-\/10}}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.fill(\textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::internal,\ std::ios::adjustfield);}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'-\/'}:}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.fill(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::left,\ std::ios::adjustfield);}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'\ '}:}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ overridden\ by\ show\ positive\ sign,\ '+'\ flag.}}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!(out.flags()\ \&\ std::ios::showpos))}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ spacePadPositive\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'+'}:}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::showpos);}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ spacePadPositive\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00633\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ widthExtra\ =\ 1;}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00639\ \ \ \ \ \}}
+\DoxyCodeLine{00640\ \ \ \ \ \textcolor{comment}{//\ 2)\ Parse\ width}}
+\DoxyCodeLine{00641\ \ \ \ \ \textcolor{keywordflow}{if}(*c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ *c\ <=\ \textcolor{charliteral}{'9'})}
+\DoxyCodeLine{00642\ \ \ \ \ \{}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ widthSet\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00644\ \ \ \ \ \ \ \ \ out.width(parseIntAndAdvance(c));}
+\DoxyCodeLine{00645\ \ \ \ \ \}}
+\DoxyCodeLine{00646\ \ \ \ \ \textcolor{keywordflow}{if}(*c\ ==\ \textcolor{charliteral}{'*'})}
+\DoxyCodeLine{00647\ \ \ \ \ \{}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \ \ widthSet\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ width\ =\ 0;}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(argIndex\ <\ numFormatters)}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \ \ \ \ \ \ width\ =\ formatters[argIndex++].toInt();}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ Not\ enough\ arguments\ to\ read\ variable\ width"{}});}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(width\ <\ 0)}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ negative\ widths\ correspond\ to\ '-\/'\ flag\ set}}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \ \ \ \ out.fill(\textcolor{charliteral}{'\ '});}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::left,\ std::ios::adjustfield);}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ \ \ \ \ width\ =\ -\/width;}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ out.width(width);}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \ \ ++c;}
+\DoxyCodeLine{00663\ \ \ \ \ \}}
+\DoxyCodeLine{00664\ \ \ \ \ \textcolor{comment}{//\ 3)\ Parse\ precision}}
+\DoxyCodeLine{00665\ \ \ \ \ \textcolor{keywordflow}{if}(*c\ ==\ \textcolor{charliteral}{'.'})}
+\DoxyCodeLine{00666\ \ \ \ \ \{}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ ++c;}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ precision\ =\ 0;}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(*c\ ==\ \textcolor{charliteral}{'*'})}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \ \ \ \ ++c;}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(argIndex\ <\ numFormatters)}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ precision\ =\ formatters[argIndex++].toInt();}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ Not\ enough\ arguments\ to\ read\ variable\ precision"{}});}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(*c\ >=\ \textcolor{charliteral}{'0'}\ \&\&\ *c\ <=\ \textcolor{charliteral}{'9'})}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ precision\ =\ parseIntAndAdvance(c);}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(*c\ ==\ \textcolor{charliteral}{'-\/'})\ \textcolor{comment}{//\ negative\ precisions\ ignored,\ treated\ as\ zero.}}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ parseIntAndAdvance(++c);}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ out.precision(precision);}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ precisionSet\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00686\ \ \ \ \ \}}
+\DoxyCodeLine{00687\ \ \ \ \ \textcolor{comment}{//\ 4)\ Ignore\ any\ C99\ length\ modifier}}
+\DoxyCodeLine{00688\ \ \ \ \ \textcolor{keywordflow}{while}(*c\ ==\ \textcolor{charliteral}{'l'}\ ||\ *c\ ==\ \textcolor{charliteral}{'h'}\ ||\ *c\ ==\ \textcolor{charliteral}{'L'}\ ||}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \ \ *c\ ==\ \textcolor{charliteral}{'j'}\ ||\ *c\ ==\ \textcolor{charliteral}{'z'}\ ||\ *c\ ==\ \textcolor{charliteral}{'t'})}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ ++c;}
+\DoxyCodeLine{00691\ \ \ \ \ \textcolor{comment}{//\ 5)\ We're\ up\ to\ the\ conversion\ specifier\ character.}}
+\DoxyCodeLine{00692\ \ \ \ \ \textcolor{comment}{//\ Set\ stream\ flags\ based\ on\ conversion\ specifier\ (thanks\ to\ the}}
+\DoxyCodeLine{00693\ \ \ \ \ \textcolor{comment}{//\ boost::format\ class\ for\ forging\ the\ way\ here).}}
+\DoxyCodeLine{00694\ \ \ \ \ \textcolor{keywordtype}{bool}\ intConversion\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00695\ \ \ \ \ \textcolor{keywordflow}{switch}(*c)}
+\DoxyCodeLine{00696\ \ \ \ \ \{}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'u'}:\ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'d'}:\ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'i'}:}
+\DoxyCodeLine{00698\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::dec,\ std::ios::basefield);}
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \ \ \ \ \ \ intConversion\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00700\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00701\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'o'}:}
+\DoxyCodeLine{00702\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::oct,\ std::ios::basefield);}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \ \ \ \ \ \ intConversion\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'X'}:}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::uppercase);}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'x'}:\ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'p'}:}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::hex,\ std::ios::basefield);}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ \ \ \ \ intConversion\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'E'}:}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::uppercase);}
+\DoxyCodeLine{00713\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'e'}:}
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::scientific,\ std::ios::floatfield);}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::dec,\ std::ios::basefield);}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00717\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'F'}:}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::uppercase);}
+\DoxyCodeLine{00719\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'f'}:}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::fixed,\ std::ios::floatfield);}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'G'}:}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::uppercase);}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'g'}:}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::dec,\ std::ios::basefield);}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ As\ in\ boost::format,\ let\ stream\ decide\ float\ format.}}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \ \ \ \ \ \ out.flags(out.flags()\ \&\ \string~std::ios::floatfield);}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'a'}:\ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'A'}:}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ the\ \%a\ and\ \%A\ conversion\ specs\ "{}}}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}are\ not\ supported"{}});}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'c'}:}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Handled\ as\ special\ case\ inside\ formatValue()}}
+\DoxyCodeLine{00735\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00736\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'s'}:}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(precisionSet)}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ntrunc\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(out.precision());}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Make\ \%s\ print\ booleans\ as\ "{}true"{}\ and\ "{}false"{}}}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \ \ \ \ \ \ out.setf(std::ios::boolalpha);}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00742\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'n'}:}
+\DoxyCodeLine{00743\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Not\ supported\ -\/\ will\ cause\ problems!}}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ \%n\ conversion\ spec\ not\ supported"{}});}
+\DoxyCodeLine{00745\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ \textcolor{charliteral}{'\(\backslash\)0'}:}
+\DoxyCodeLine{00747\ \ \ \ \ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ Conversion\ spec\ incorrectly\ "{}}}
+\DoxyCodeLine{00748\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}terminated\ by\ end\ of\ string"{}});}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ c;}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{default}:}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00752\ \ \ \ \ \}}
+\DoxyCodeLine{00753\ \ \ \ \ \textcolor{keywordflow}{if}(intConversion\ \&\&\ precisionSet\ \&\&\ !widthSet)}
+\DoxyCodeLine{00754\ \ \ \ \ \{}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ "{}precision"{}\ for\ integers\ gives\ the\ minimum\ number\ of\ digits\ (to\ be}}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ padded\ with\ zeros\ on\ the\ left).\ \ This\ isn't\ really\ supported\ by\ the}}
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ iostreams,\ but\ we\ can\ approximately\ simulate\ it\ with\ the\ width\ if}}
+\DoxyCodeLine{00758\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ width\ isn't\ otherwise\ used.}}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \ \ out.width(out.precision()\ +\ widthExtra);}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ \ \ out.setf(std::ios::internal,\ std::ios::adjustfield);}
+\DoxyCodeLine{00761\ \ \ \ \ \ \ \ \ out.fill(\textcolor{charliteral}{'0'});}
+\DoxyCodeLine{00762\ \ \ \ \ \}}
+\DoxyCodeLine{00763\ \ \ \ \ \textcolor{keywordflow}{return}\ c+1;}
+\DoxyCodeLine{00764\ \}}
+\DoxyCodeLine{00765\ }
+\DoxyCodeLine{00766\ }
+\DoxyCodeLine{00767\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00768\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ formatImpl(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt,}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ detail::FormatArg*\ formatters,}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ numFormatters)}
+\DoxyCodeLine{00771\ \{}
+\DoxyCodeLine{00772\ \ \ \ \ \textcolor{comment}{//\ Saved\ stream\ state}}
+\DoxyCodeLine{00773\ \ \ \ \ std::streamsize\ origWidth\ =\ out.width();}
+\DoxyCodeLine{00774\ \ \ \ \ std::streamsize\ origPrecision\ =\ out.precision();}
+\DoxyCodeLine{00775\ \ \ \ \ std::ios::fmtflags\ origFlags\ =\ out.flags();}
+\DoxyCodeLine{00776\ \ \ \ \ \textcolor{keywordtype}{char}\ origFill\ =\ out.fill();}
+\DoxyCodeLine{00777\ }
+\DoxyCodeLine{00778\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ argIndex\ =\ 0;\ argIndex\ <\ numFormatters;\ ++argIndex)}
+\DoxyCodeLine{00779\ \ \ \ \ \{}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Parse\ the\ format\ string}}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \ \ fmt\ =\ printFormatStringLiteral(out,\ fmt);}
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ spacePadPositive\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ntrunc\ =\ -\/1;}
+\DoxyCodeLine{00784\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmtEnd\ =\ streamStateFromFormat(out,\ spacePadPositive,\ ntrunc,\ fmt,}
+\DoxyCodeLine{00785\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ formatters,\ argIndex,\ numFormatters);}
+\DoxyCodeLine{00786\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (argIndex\ >=\ numFormatters)}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00788\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ args\ remain\ after\ reading\ any\ variable\ width/precision}}
+\DoxyCodeLine{00789\ \ \ \ \ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ Not\ enough\ format\ arguments"{}});}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ FormatArg\&\ arg\ =\ formatters[argIndex];}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Format\ the\ arg\ into\ the\ stream.}}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!spacePadPositive)}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \ \ \ \ \ \ arg.format(out,\ fmt,\ fmtEnd,\ ntrunc);}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ following\ is\ a\ special\ case\ with\ no\ direct\ correspondence}}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ between\ stream\ formatting\ and\ the\ printf()\ behaviour.\ \ Simulate}}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ it\ crudely\ by\ formatting\ into\ a\ temporary\ string\ stream\ and}}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ munging\ the\ resulting\ string.}}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ \ \ \ \ \ \ std::ostringstream\ tmpStream;}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \ \ \ \ \ \ tmpStream.copyfmt(out);}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \ \ \ \ \ \ tmpStream.setf(std::ios::showpos);}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \ \ \ \ \ \ arg.format(tmpStream,\ fmt,\ fmtEnd,\ ntrunc);}
+\DoxyCodeLine{00806\ \ \ \ \ \ \ \ \ \ \ \ \ std::string\ result\ =\ tmpStream.str();\ \textcolor{comment}{//\ allocates...\ yuck.}}
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t}\ i\ =\ 0,\ iend\ =\ result.size();\ i\ <\ iend;\ ++i)}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(result[i]\ ==\ \textcolor{charliteral}{'+'})\ result[i]\ =\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \ \ \ \ \ \ out\ <<\ result;}
+\DoxyCodeLine{00810\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \ \ fmt\ =\ fmtEnd;}
+\DoxyCodeLine{00812\ \ \ \ \ \}}
+\DoxyCodeLine{00813\ }
+\DoxyCodeLine{00814\ \ \ \ \ \textcolor{comment}{//\ Print\ remaining\ part\ of\ format\ string.}}
+\DoxyCodeLine{00815\ \ \ \ \ fmt\ =\ printFormatStringLiteral(out,\ fmt);}
+\DoxyCodeLine{00816\ \ \ \ \ \textcolor{keywordflow}{if}(*fmt\ !=\ \textcolor{charliteral}{'\(\backslash\)0'})}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \ \ TINYFORMAT\_ERROR(\textcolor{stringliteral}{"{}tinyformat:\ Too\ many\ conversion\ specifiers\ in\ format\ string"{}});}
+\DoxyCodeLine{00818\ }
+\DoxyCodeLine{00819\ \ \ \ \ \textcolor{comment}{//\ Restore\ stream\ state}}
+\DoxyCodeLine{00820\ \ \ \ \ out.width(origWidth);}
+\DoxyCodeLine{00821\ \ \ \ \ out.precision(origPrecision);}
+\DoxyCodeLine{00822\ \ \ \ \ out.flags(origFlags);}
+\DoxyCodeLine{00823\ \ \ \ \ out.fill(origFill);}
+\DoxyCodeLine{00824\ \}}
+\DoxyCodeLine{00825\ }
+\DoxyCodeLine{00826\ \}\ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00827\ }
+\DoxyCodeLine{00828\ }
+\DoxyCodeLine{00835\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}}
+\DoxyCodeLine{00836\ \{}
+\DoxyCodeLine{00837\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}(\mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatArg}{detail::FormatArg}}*\ formatters,\ \textcolor{keywordtype}{int}\ N)}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \ \ \ \ \ \ :\ m\_formatters(formatters),\ m\_N(N)\ \{\ \}}
+\DoxyCodeLine{00840\ }
+\DoxyCodeLine{00841\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ vformat(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt,}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}\&\ list);}
+\DoxyCodeLine{00843\ }
+\DoxyCodeLine{00844\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00845\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatArg}{detail::FormatArg}}*\ m\_formatters;}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ m\_N;}
+\DoxyCodeLine{00847\ \};}
+\DoxyCodeLine{00848\ }
+\DoxyCodeLine{00850\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}\&\ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatListRef}};}
+\DoxyCodeLine{00851\ }
+\DoxyCodeLine{00852\ }
+\DoxyCodeLine{00853\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{00854\ }
+\DoxyCodeLine{00855\ \textcolor{comment}{//\ Format\ list\ subclass\ with\ fixed\ storage\ to\ avoid\ dynamic\ allocation}}
+\DoxyCodeLine{00856\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00857\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatListN}{FormatListN}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}}
+\DoxyCodeLine{00858\ \{}
+\DoxyCodeLine{00859\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00860\ \textcolor{preprocessor}{\#ifdef\ TINYFORMAT\_USE\_VARIADIC\_TEMPLATES}}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatListN}{FormatListN}}(\textcolor{keyword}{const}\ Args\&...\ args)}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}(\&m\_formatterStore[0],\ N),}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \ \ \ \ \ \ m\_formatterStore\ \{\ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatArg}{FormatArg}}(args)...\ \}}
+\DoxyCodeLine{00865\ \ \ \ \ \ \ \ \ \{\ \textcolor{keyword}{static\_assert}(\textcolor{keyword}{sizeof}...(args)\ ==\ N,\ \textcolor{stringliteral}{"{}Number\ of\ args\ must\ be\ N"{}});\ \}}
+\DoxyCodeLine{00866\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{//\ C++98\ version}}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ init(\textcolor{keywordtype}{int})\ \{\}}
+\DoxyCodeLine{00868\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ define\ TINYFORMAT\_MAKE\_FORMATLIST\_CONSTRUCTOR(n)\ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00869\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00870\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ template<TINYFORMAT\_ARGTYPES(n)>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00871\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ FormatListN(TINYFORMAT\_VARARGS(n))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00872\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ :\ FormatList(\&m\_formatterStore[0],\ n)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00873\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \{\ assert(n\ ==\ N);\ init(0,\ TINYFORMAT\_PASSARGS(n));\ \}\ \ \ \(\backslash\)}}
+\DoxyCodeLine{00874\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00875\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ template<TINYFORMAT\_ARGTYPES(n)>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00876\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ void\ init(int\ i,\ TINYFORMAT\_VARARGS(n))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00877\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00878\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ m\_formatterStore[i]\ =\ FormatArg(v1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00879\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ init(i+1\ TINYFORMAT\_PASSARGS\_TAIL(n));\ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00880\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{00881\ }
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \ \ TINYFORMAT\_FOREACH\_ARGNUM(TINYFORMAT\_MAKE\_FORMATLIST\_CONSTRUCTOR)}
+\DoxyCodeLine{00883\ \textcolor{preprocessor}{\#\ \ \ \ \ \ \ undef\ TINYFORMAT\_MAKE\_FORMATLIST\_CONSTRUCTOR}}
+\DoxyCodeLine{00884\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00885\ }
+\DoxyCodeLine{00886\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatArg}{FormatArg}}\ m\_formatterStore[N];}
+\DoxyCodeLine{00888\ \};}
+\DoxyCodeLine{00889\ }
+\DoxyCodeLine{00890\ \textcolor{comment}{//\ Special\ 0-\/arg\ version\ -\/\ MSVC\ says\ zero-\/sized\ C\ array\ in\ struct\ is\ nonstandard}}
+\DoxyCodeLine{00891\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatListN}{FormatListN}}<0>\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}}
+\DoxyCodeLine{00892\ \{}
+\DoxyCodeLine{00893\ \ \ \ \ \textcolor{keyword}{public}:\ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatListN}{FormatListN}}()\ :\ \mbox{\hyperlink{classtinyformat_1_1FormatList}{FormatList}}(0,\ 0)\ \{\}}
+\DoxyCodeLine{00894\ \};}
+\DoxyCodeLine{00895\ }
+\DoxyCodeLine{00896\ \}\ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00897\ }
+\DoxyCodeLine{00898\ }
+\DoxyCodeLine{00899\ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00900\ \textcolor{comment}{//\ Primary\ API\ functions}}
+\DoxyCodeLine{00901\ }
+\DoxyCodeLine{00902\ \textcolor{preprocessor}{\#ifdef\ TINYFORMAT\_USE\_VARIADIC\_TEMPLATES}}
+\DoxyCodeLine{00903\ }
+\DoxyCodeLine{00910\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00911\ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatListN}{detail::FormatListN}}<\textcolor{keyword}{sizeof}...(Args)>\ makeFormatList(\textcolor{keyword}{const}\ Args\&...\ args)}
+\DoxyCodeLine{00912\ \{}
+\DoxyCodeLine{00913\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{classtinyformat_1_1detail_1_1FormatListN}{detail::FormatListN}}<\textcolor{keyword}{sizeof}...(args)>(args...);}
+\DoxyCodeLine{00914\ \}}
+\DoxyCodeLine{00915\ }
+\DoxyCodeLine{00916\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{//\ C++98\ version}}
+\DoxyCodeLine{00917\ }
+\DoxyCodeLine{00918\ \textcolor{keyword}{inline}\ detail::FormatListN<0>\ makeFormatList()}
+\DoxyCodeLine{00919\ \{}
+\DoxyCodeLine{00920\ \ \ \ \ \textcolor{keywordflow}{return}\ detail::FormatListN<0>();}
+\DoxyCodeLine{00921\ \}}
+\DoxyCodeLine{00922\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_MAKE\_MAKEFORMATLIST(n)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00923\ \textcolor{preprocessor}{template<TINYFORMAT\_ARGTYPES(n)>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00924\ \textcolor{preprocessor}{detail::FormatListN<n>\ makeFormatList(TINYFORMAT\_VARARGS(n))\ \ \(\backslash\)}}
+\DoxyCodeLine{00925\ \textcolor{preprocessor}{\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00926\ \textcolor{preprocessor}{\ \ \ \ return\ detail::FormatListN<n>(TINYFORMAT\_PASSARGS(n));\ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00927\ \textcolor{preprocessor}{\}}}
+\DoxyCodeLine{00928\ TINYFORMAT\_FOREACH\_ARGNUM(TINYFORMAT\_MAKE\_MAKEFORMATLIST)}
+\DoxyCodeLine{00929\ \textcolor{preprocessor}{\#undef\ TINYFORMAT\_MAKE\_MAKEFORMATLIST}}
+\DoxyCodeLine{00930\ }
+\DoxyCodeLine{00931\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00932\ }
+\DoxyCodeLine{00937\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ vformat(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt,\ FormatListRef\ list)}
+\DoxyCodeLine{00938\ \{}
+\DoxyCodeLine{00939\ \ \ \ \ detail::formatImpl(out,\ fmt,\ list.m\_formatters,\ list.m\_N);}
+\DoxyCodeLine{00940\ \}}
+\DoxyCodeLine{00941\ }
+\DoxyCodeLine{00942\ }
+\DoxyCodeLine{00943\ \textcolor{preprocessor}{\#ifdef\ TINYFORMAT\_USE\_VARIADIC\_TEMPLATES}}
+\DoxyCodeLine{00944\ }
+\DoxyCodeLine{00946\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00947\ \textcolor{keywordtype}{void}\ format(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt,\ \textcolor{keyword}{const}\ Args\&...\ args)}
+\DoxyCodeLine{00948\ \{}
+\DoxyCodeLine{00949\ \ \ \ \ vformat(out,\ fmt,\ makeFormatList(args...));}
+\DoxyCodeLine{00950\ \}}
+\DoxyCodeLine{00951\ }
+\DoxyCodeLine{00954\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00955\ std::string\ format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt,\ \textcolor{keyword}{const}\ Args\&...\ args)}
+\DoxyCodeLine{00956\ \{}
+\DoxyCodeLine{00957\ \ \ \ \ std::ostringstream\ oss;}
+\DoxyCodeLine{00958\ \ \ \ \ format(oss,\ fmt,\ args...);}
+\DoxyCodeLine{00959\ \ \ \ \ \textcolor{keywordflow}{return}\ oss.str();}
+\DoxyCodeLine{00960\ \}}
+\DoxyCodeLine{00961\ }
+\DoxyCodeLine{00963\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00964\ \textcolor{keywordtype}{void}\ printf(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt,\ \textcolor{keyword}{const}\ Args\&...\ args)}
+\DoxyCodeLine{00965\ \{}
+\DoxyCodeLine{00966\ \ \ \ \ format(std::cout,\ fmt,\ args...);}
+\DoxyCodeLine{00967\ \}}
+\DoxyCodeLine{00968\ }
+\DoxyCodeLine{00969\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00970\ \textcolor{keywordtype}{void}\ printfln(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt,\ \textcolor{keyword}{const}\ Args\&...\ args)}
+\DoxyCodeLine{00971\ \{}
+\DoxyCodeLine{00972\ \ \ \ \ format(std::cout,\ fmt,\ args...);}
+\DoxyCodeLine{00973\ \ \ \ \ std::cout\ <<\ \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{00974\ \}}
+\DoxyCodeLine{00975\ }
+\DoxyCodeLine{00976\ }
+\DoxyCodeLine{00977\ \textcolor{preprocessor}{\#else\ }\textcolor{comment}{//\ C++98\ version}}
+\DoxyCodeLine{00978\ }
+\DoxyCodeLine{00979\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ format(std::ostream\&\ out,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt)}
+\DoxyCodeLine{00980\ \{}
+\DoxyCodeLine{00981\ \ \ \ \ vformat(out,\ fmt,\ makeFormatList());}
+\DoxyCodeLine{00982\ \}}
+\DoxyCodeLine{00983\ }
+\DoxyCodeLine{00984\ \textcolor{keyword}{inline}\ std::string\ format(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt)}
+\DoxyCodeLine{00985\ \{}
+\DoxyCodeLine{00986\ \ \ \ \ std::ostringstream\ oss;}
+\DoxyCodeLine{00987\ \ \ \ \ format(oss,\ fmt);}
+\DoxyCodeLine{00988\ \ \ \ \ \textcolor{keywordflow}{return}\ oss.str();}
+\DoxyCodeLine{00989\ \}}
+\DoxyCodeLine{00990\ }
+\DoxyCodeLine{00991\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ printf(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt)}
+\DoxyCodeLine{00992\ \{}
+\DoxyCodeLine{00993\ \ \ \ \ format(std::cout,\ fmt);}
+\DoxyCodeLine{00994\ \}}
+\DoxyCodeLine{00995\ }
+\DoxyCodeLine{00996\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ printfln(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ fmt)}
+\DoxyCodeLine{00997\ \{}
+\DoxyCodeLine{00998\ \ \ \ \ format(std::cout,\ fmt);}
+\DoxyCodeLine{00999\ \ \ \ \ std::cout\ <<\ \textcolor{charliteral}{'\(\backslash\)n'};}
+\DoxyCodeLine{01000\ \}}
+\DoxyCodeLine{01001\ }
+\DoxyCodeLine{01002\ \textcolor{preprocessor}{\#define\ TINYFORMAT\_MAKE\_FORMAT\_FUNCS(n)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01003\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01004\ \textcolor{preprocessor}{template<TINYFORMAT\_ARGTYPES(n)>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01005\ \textcolor{preprocessor}{void\ format(std::ostream\&\ out,\ const\ char*\ fmt,\ TINYFORMAT\_VARARGS(n))\ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01006\ \textcolor{preprocessor}{\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01007\ \textcolor{preprocessor}{\ \ \ \ vformat(out,\ fmt,\ makeFormatList(TINYFORMAT\_PASSARGS(n)));\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01008\ \textcolor{preprocessor}{\}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01009\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01010\ \textcolor{preprocessor}{template<TINYFORMAT\_ARGTYPES(n)>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01011\ \textcolor{preprocessor}{std::string\ format(const\ char*\ fmt,\ TINYFORMAT\_VARARGS(n))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01012\ \textcolor{preprocessor}{\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01013\ \textcolor{preprocessor}{\ \ \ \ std::ostringstream\ oss;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01014\ \textcolor{preprocessor}{\ \ \ \ format(oss,\ fmt,\ TINYFORMAT\_PASSARGS(n));\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01015\ \textcolor{preprocessor}{\ \ \ \ return\ oss.str();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01016\ \textcolor{preprocessor}{\}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01017\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01018\ \textcolor{preprocessor}{template<TINYFORMAT\_ARGTYPES(n)>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01019\ \textcolor{preprocessor}{void\ printf(const\ char*\ fmt,\ TINYFORMAT\_VARARGS(n))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01020\ \textcolor{preprocessor}{\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01021\ \textcolor{preprocessor}{\ \ \ \ format(std::cout,\ fmt,\ TINYFORMAT\_PASSARGS(n));\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01022\ \textcolor{preprocessor}{\}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01023\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01024\ \textcolor{preprocessor}{template<TINYFORMAT\_ARGTYPES(n)>\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01025\ \textcolor{preprocessor}{void\ printfln(const\ char*\ fmt,\ TINYFORMAT\_VARARGS(n))\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01026\ \textcolor{preprocessor}{\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01027\ \textcolor{preprocessor}{\ \ \ \ format(std::cout,\ fmt,\ TINYFORMAT\_PASSARGS(n));\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01028\ \textcolor{preprocessor}{\ \ \ \ std::cout\ <<\ '\(\backslash\)n';\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01029\ \textcolor{preprocessor}{\}}}
+\DoxyCodeLine{01030\ }
+\DoxyCodeLine{01031\ TINYFORMAT\_FOREACH\_ARGNUM(TINYFORMAT\_MAKE\_FORMAT\_FUNCS)}
+\DoxyCodeLine{01032\ \textcolor{preprocessor}{\#undef\ TINYFORMAT\_MAKE\_FORMAT\_FUNCS}}
+\DoxyCodeLine{01033\ }
+\DoxyCodeLine{01034\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01035\ }
+\DoxyCodeLine{01036\ }
+\DoxyCodeLine{01037\ \}\ \textcolor{comment}{//\ namespace\ tinyformat}}
+\DoxyCodeLine{01038\ }
+\DoxyCodeLine{01039\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ TINYFORMAT\_H\_INCLUDED}}
+
+\end{DoxyCode}

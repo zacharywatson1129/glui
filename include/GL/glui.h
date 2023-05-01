@@ -694,6 +694,10 @@ public:
 
     /** Draw a 3D-look pushed-out box around this rectangle */
     void         draw_raised_box( int x, int y, int w, int h );
+
+    /* Same as draw_raised_box, but you get to pick a background color.*/
+    void         draw_raised_box2(int x, int y, int w, int h, float r, float g, float b);
+
     /** Draw a 3D-look pushed-in box around this rectangle */
     void         draw_lowered_box( int x, int y, int w, int h );
 

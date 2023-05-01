@@ -17,7 +17,7 @@ ifeq ($(UNAME), Linux)
 CXX      ?= g++
 CPPFLAGS += $(OPTS) -Wall -pedantic
 LIBGL     = -lGLU -lGL
-LIBS      = -lXmu -lXext -lX11 -lXi -lm
+LIBS      = -lXext -lX11 -lm
 
 # One of the following options only...
 

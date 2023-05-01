@@ -1,0 +1,105 @@
+\hypertarget{arcball_8h_source}{}\doxysection{arcball.\+h}
+\label{arcball_8h_source}\index{/home/zach/Documents/glui/src/arcball.h@{/home/zach/Documents/glui/src/arcball.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/**********************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ \ arcball.h}}
+\DoxyCodeLine{00004\ \textcolor{comment}{}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ GLUI\ User\ Interface\ Toolkit}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ Copyright\ (c)\ 1998\ Paul\ Rademacher}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ \ \ \ \ Feb\ 1998,\ Paul\ Rademacher\ (rademach@cs.unc.edu)}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ \ \ \ Oct\ 2003,\ Nigel\ Stewart\ -\/\ GLUI\ Code\ Cleaning}}
+\DoxyCodeLine{00009\ \textcolor{comment}{}}
+\DoxyCodeLine{00010\ \textcolor{comment}{}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ WWW:\ \ \ \ https://github.com/libglui/glui}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ Issues:\ https://github.com/libglui/glui/issues}}
+\DoxyCodeLine{00013\ \textcolor{comment}{}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ This\ software\ is\ provided\ 'as-\/is',\ without\ any\ express\ or\ implied}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ warranty.\ In\ no\ event\ will\ the\ authors\ be\ held\ liable\ for\ any\ damages}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ arising\ from\ the\ use\ of\ this\ software.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ Permission\ is\ granted\ to\ anyone\ to\ use\ this\ software\ for\ any\ purpose,}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ including\ commercial\ applications,\ and\ to\ alter\ it\ and\ redistribute\ it}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ \ freely,\ subject\ to\ the\ following\ restrictions:}}
+\DoxyCodeLine{00021\ \textcolor{comment}{}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ 1.\ The\ origin\ of\ this\ software\ must\ not\ be\ misrepresented;\ you\ must\ not}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ claim\ that\ you\ wrote\ the\ original\ software.\ If\ you\ use\ this\ software}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ in\ a\ product,\ an\ acknowledgment\ in\ the\ product\ documentation\ would\ be}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ appreciated\ but\ is\ not\ required.}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ \ 2.\ Altered\ source\ versions\ must\ be\ plainly\ marked\ as\ such,\ and\ must\ not\ be}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ \ misrepresented\ as\ being\ the\ original\ software.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ \ 3.\ This\ notice\ may\ not\ be\ removed\ or\ altered\ from\ any\ source\ distribution.}}
+\DoxyCodeLine{00029\ \textcolor{comment}{}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00031\ \textcolor{comment}{}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ A\ C++\ class\ that\ implements\ the\ Arcball,\ as\ described\ by\ Ken}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ \ Shoemake\ in\ Graphics\ Gems\ IV.}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ This\ class\ takes\ as\ input\ mouse\ events\ (mouse\ down,\ mouse\ drag,}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ \ mouse\ up),\ and\ creates\ the\ appropriate\ quaternions\ and\ 4x4\ matrices}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ \ to\ represent\ the\ rotation\ given\ by\ the\ mouse.}}
+\DoxyCodeLine{00037\ \textcolor{comment}{}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ This\ class\ is\ used\ as\ follows:}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ -\/\ initialize\ [either\ in\ the\ constructor\ or\ with\ set\_params()],\ the}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ \ \ \ center\ position\ (x,y)\ of\ the\ arcball\ on\ the\ screen,\ and\ the\ radius}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ \ -\/\ on\ mouse\ down,\ call\ mouse\_down(x,y)\ with\ the\ mouse\ position}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ \ -\/\ as\ the\ mouse\ is\ dragged,\ repeatedly\ call\ mouse\_motion()\ with\ the}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ \ \ \ current\ x\ and\ y\ positions.\ \ One\ can\ optionally\ pass\ in\ the\ current}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ \ \ \ state\ of\ the\ SHIFT,\ ALT,\ and\ CONTROL\ keys\ (passing\ zero\ if\ keys}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ \ \ are\ not\ pressed,\ non-\/zero\ otherwise),\ which\ constrains}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ \ \ the\ rotation\ to\ certain\ axes\ (X\ for\ CONTROL,\ Y\ for\ ALT).}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ \ -\/\ when\ the\ mouse\ button\ is\ released,\ call\ mouse\_up()}}
+\DoxyCodeLine{00048\ \textcolor{comment}{}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ Axis\ constraints\ can\ also\ be\ explicitly\ set\ with\ the}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ set\_constraints()\ function.}}
+\DoxyCodeLine{00051\ \textcolor{comment}{}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ \ The\ current\ rotation\ is\ stored\ in\ the\ 4x4\ float\ matrix\ 'rot'.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ \ It\ is\ also\ stored\ in\ the\ quaternion\ 'q\_now'.}}
+\DoxyCodeLine{00054\ \textcolor{comment}{}}
+\DoxyCodeLine{00055\ \textcolor{comment}{**********************************************************************/}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#ifndef\ GLUI\_ARCBALL\_H}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ GLUI\_ARCBALL\_H}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#include\ "{}glui\_internal.h"{}}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#include\ "{}algebra3.h"{}}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#include\ "{}quaternion.h"{}}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classArcball}{Arcball}}}
+\DoxyCodeLine{00065\ \{}
+\DoxyCodeLine{00066\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ \ \ \ \ \mbox{\hyperlink{classArcball}{Arcball}}();}
+\DoxyCodeLine{00068\ \ \ \ \ \mbox{\hyperlink{classArcball}{Arcball}}(\mbox{\hyperlink{classmat4}{mat4}}\ *mtx);}
+\DoxyCodeLine{00069\ \ \ \ \ \mbox{\hyperlink{classArcball}{Arcball}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&center,\ \textcolor{keywordtype}{float}\ radius);}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \ set\_damping(\textcolor{keywordtype}{float}\ d);}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ \ idle();}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ \ mouse\_down(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y);}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ \ mouse\_up();}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ \ mouse\_motion(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ shift,\ \textcolor{keywordtype}{int}\ ctrl,\ \textcolor{keywordtype}{int}\ alt);}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{void}\ \ mouse\_motion(\textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y);}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{void}\ \ set\_constraints(\textcolor{keywordtype}{bool}\ constrain\_x,\ \textcolor{keywordtype}{bool}\ constrain\_y);}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{void}\ \ set\_params(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&center,\ \textcolor{keywordtype}{float}\ radius);}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ \ reset\_mouse();}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \ init();}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ constrain\_vector(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&vector,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&axis);}
+\DoxyCodeLine{00083\ \ \ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ mouse\_to\_sphere(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec2}{vec2}}\ \&p);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \textcolor{comment}{//public:}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ is\_mouse\_down;\ \ \textcolor{comment}{/*\ true\ for\ down,\ false\ for\ up\ */}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ is\_spinning;}
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{classquat}{quat}}\ \ q\_now,\ q\_down,\ q\_drag,\ q\_increment;}
+\DoxyCodeLine{00089\ \ \ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ down\_pt;}
+\DoxyCodeLine{00090\ \ \ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \ rot,\ rot\_increment;}
+\DoxyCodeLine{00091\ \ \ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \ *rot\_ptr;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordtype}{bool}\ \ constraint\_x,\ constraint\_y;}
+\DoxyCodeLine{00094\ \ \ \ \ \mbox{\hyperlink{classvec2}{vec2}}\ \ center;}
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{float}\ radius,\ damp\_factor;}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ zero\_increment;}
+\DoxyCodeLine{00097\ \};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

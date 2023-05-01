@@ -116,7 +116,8 @@ void    GLUI_Button::draw( int x, int y )
 {
   if (currently_inside) draw_pressed();
   else {
-    glui->draw_raised_box( 0, 0, w, h );
+    //glui->draw_raised_box( 0, 0, w, h );
+	glui->draw_raised_box2(0, 0, w, h, 0.184f, 1.0f, 0.0f);
     draw_text( 0 );
   }
 }
@@ -128,13 +129,19 @@ void   GLUI_Button::draw_pressed()
 {
   glColor3f( 0.0, 0.0, 0.0 );
 
-  draw_text( 1 );
+  draw_text( 1 ); // Draw sunken text.
 
   glBegin( GL_LINE_LOOP );
   glVertex2i( 0, 0 );         glVertex2i( w, 0 );
   glVertex2i( w, h );         glVertex2i( 0, h );
   glEnd();
 
+  /*
+		Note from Zach: I believe above is the inside thick black line whenever you press down on the button.
+		If you run one of the example programs and examine the button while holding it pressed down, you can see
+		the one pixel border on the inside of the black border and the following code probably draws that dotted
+		line.
+  */
   glBegin( GL_LINE_LOOP );
   glVertex2i( 1, 1 );         glVertex2i( w-1, 1 );
   glVertex2i( w-1, h-1 );     glVertex2i( 1, h-1 );
@@ -150,9 +157,9 @@ void     GLUI_Button::draw_text( int sunken )
 
   glColor3ubv( glui->bkgd_color );
   glDisable( GL_CULL_FACE );
-  glBegin( GL_QUADS );
+  /*glBegin( GL_QUADS );
   glVertex2i( 2, 2 );         glVertex2i( w-2, 2 );
-  glVertex2i( w-2, h-2 );     glVertex2i( 2, h-2 );
+  glVertex2i( w-2, h-2 );     glVertex2i( 2, h-2 );*/
   glEnd();
 
   glColor3ub( 0,0,0 );
@@ -162,7 +169,7 @@ void     GLUI_Button::draw_text( int sunken )
   if ( NOT sunken ) {
     draw_name( std::max((w-string_width),0)/2, 13);
   }
-  else {
+  else { // going to have to draw the text a little bit pushed down to give that 3d dimensional look.
     draw_name( std::max((w-string_width),0)/2 + 1, 13 + 1);
   }
 

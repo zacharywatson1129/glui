@@ -1,0 +1,121 @@
+\hypertarget{quaternion_8h_source}{}\doxysection{quaternion.\+h}
+\label{quaternion_8h_source}\index{/home/zach/Documents/glui/src/quaternion.h@{/home/zach/Documents/glui/src/quaternion.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ \ quaternion.h\ -\/\ A\ quaternion\ class}}
+\DoxyCodeLine{00004\ \textcolor{comment}{}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ \ GLUI\ User\ Interface\ Toolkit}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ \ Copyright\ (c)\ 1998\ Paul\ Rademacher}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00009\ \textcolor{comment}{}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ \ WWW:\ \ \ \ https://github.com/libglui/glui}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ \ Issues:\ https://github.com/libglui/glui/issues}}
+\DoxyCodeLine{00012\ \textcolor{comment}{}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ \ This\ software\ is\ provided\ 'as-\/is',\ without\ any\ express\ or\ implied}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ warranty.\ In\ no\ event\ will\ the\ authors\ be\ held\ liable\ for\ any\ damages}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ arising\ from\ the\ use\ of\ this\ software.}}
+\DoxyCodeLine{00016\ \textcolor{comment}{}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ Permission\ is\ granted\ to\ anyone\ to\ use\ this\ software\ for\ any\ purpose,}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ including\ commercial\ applications,\ and\ to\ alter\ it\ and\ redistribute\ it}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ freely,\ subject\ to\ the\ following\ restrictions:}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ \ 1.\ The\ origin\ of\ this\ software\ must\ not\ be\ misrepresented;\ you\ must\ not}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ \ claim\ that\ you\ wrote\ the\ original\ software.\ If\ you\ use\ this\ software}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ \ in\ a\ product,\ an\ acknowledgment\ in\ the\ product\ documentation\ would\ be}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ \ appreciated\ but\ is\ not\ required.}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ \ 2.\ Altered\ source\ versions\ must\ be\ plainly\ marked\ as\ such,\ and\ must\ not\ be}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ \ misrepresented\ as\ being\ the\ original\ software.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ \ 3.\ This\ notice\ may\ not\ be\ removed\ or\ altered\ from\ any\ source\ distribution.}}
+\DoxyCodeLine{00028\ \textcolor{comment}{}}
+\DoxyCodeLine{00029\ \textcolor{comment}{*****************************************************************************/}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#ifndef\ GLUI\_QUATERNION\_H}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ GLUI\_QUATERNION\_H}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}algebra3.h"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ <cstdio>}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{comment}{/*\ this\ line\ defines\ a\ new\ type:\ pointer\ to\ a\ function\ which\ returns\ a\ */}}
+\DoxyCodeLine{00038\ \textcolor{comment}{/*\ float\ and\ takes\ as\ argument\ a\ float\ */}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{typedef}\ float\ (*V\_FCT\_PTR)(float);}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{comment}{/****************************************************************}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Quaternion\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ ****************************************************************/}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classquat}{quat}}}
+\DoxyCodeLine{00046\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{comment}{/*protected:\ */}}
+\DoxyCodeLine{00048\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ v;\ \ \textcolor{comment}{/*\ vector\ component\ */}}
+\DoxyCodeLine{00051\ \ \ \textcolor{keywordtype}{float}\ s;\ \ \textcolor{comment}{/*\ scalar\ component\ */}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \textcolor{comment}{/*public:\ */}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \textcolor{comment}{/*\ Constructors\ */}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \mbox{\hyperlink{classquat}{quat}}();}
+\DoxyCodeLine{00058\ \ \ \mbox{\hyperlink{classquat}{quat}}(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z,\ \textcolor{keywordtype}{float}\ w);}
+\DoxyCodeLine{00059\ \ \ \mbox{\hyperlink{classquat}{quat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keywordtype}{float}\ s);}
+\DoxyCodeLine{00060\ \ \ \mbox{\hyperlink{classquat}{quat}}(\textcolor{keywordtype}{float}\ \ \ s,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v);}
+\DoxyCodeLine{00061\ \ \ \mbox{\hyperlink{classquat}{quat}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \ *d);\ \ \ \ \ \textcolor{comment}{/*\ copy\ from\ four-\/element\ float\ array\ \ */}}
+\DoxyCodeLine{00062\ \ \ \mbox{\hyperlink{classquat}{quat}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ *f);\ \ \ \ \ \textcolor{comment}{/*\ copy\ from\ four-\/element\ double\ array\ */}}
+\DoxyCodeLine{00063\ \ \ \mbox{\hyperlink{classquat}{quat}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \ \ \&q);\ \ \ \ \ \textcolor{comment}{/*\ copy\ from\ other\ quat\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \textcolor{comment}{/*\ Assignment\ operators\ */}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \mbox{\hyperlink{classquat}{quat}}\ \ \&operator\ \ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{/*\ assignment\ of\ a\ quat\ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00068\ \ \ \mbox{\hyperlink{classquat}{quat}}\ \ \&operator\ +=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{/*\ incrementation\ by\ a\ quat\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00069\ \ \ \mbox{\hyperlink{classquat}{quat}}\ \ \&operator\ -\/=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&v);\ \ \ \ \ \ \textcolor{comment}{/*\ decrementation\ by\ a\ quat\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00070\ \ \ \mbox{\hyperlink{classquat}{quat}}\ \ \&operator\ *=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \textcolor{comment}{/*\ multiplication\ by\ a\ constant\ \ \ \ */}}
+\DoxyCodeLine{00071\ \ \ \mbox{\hyperlink{classquat}{quat}}\ \ \&operator\ /=\ (\textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \textcolor{comment}{/*\ division\ by\ a\ constant\ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{/*\ special\ functions\ */}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{float}\ \ length()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ length\ of\ a\ quat\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordtype}{float}\ \ length2()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ squared\ length\ of\ a\ quat\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00077\ \ \ \mbox{\hyperlink{classquat}{quat}}\ \ \&apply(V\_FCT\_PTR\ fct);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ apply\ a\ func.\ to\ each\ component\ */}}
+\DoxyCodeLine{00078\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \ xform(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v\ );\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ q*v*q-\/1\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00079\ \ \ \mbox{\hyperlink{classmat4}{mat4}}\ \ \ to\_mat4()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00080\ \ \ \textcolor{keywordtype}{void}\ \ \ set\_angle(\textcolor{keywordtype}{float}\ f);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ set\ rot\ angle\ (degrees)\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00081\ \ \ \textcolor{keywordtype}{void}\ \ \ scale\_angle(\textcolor{keywordtype}{float}\ f);\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ scale\ rot\ angle\ (degrees)\ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00082\ \ \ \textcolor{keywordtype}{float}\ \ get\_angle()\ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ set\ rot\ angle\ (degrees)\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00083\ \ \ \mbox{\hyperlink{classvec3}{vec3}}\ \ \ get\_axis()\ \ \textcolor{keyword}{const};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ get\ axis\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \textcolor{keywordtype}{void}\ \ \ print(\ FILE\ *file,\ \textcolor{keyword}{const}\ std::string\ \&name\ )\ \textcolor{keyword}{const};\ \ \textcolor{comment}{/*\ print\ to\ a\ file\ \ */}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i);\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ indexing\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \&operator\ []\ (\textcolor{keywordtype}{int}\ i)\ \textcolor{keyword}{const};\ \ \textcolor{comment}{/*\ indexing\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \textcolor{keywordtype}{void}\ \ \ set(\textcolor{keywordtype}{float}\ x,\ \textcolor{keywordtype}{float}\ y,\ \textcolor{keywordtype}{float}\ z);\ \ \ \textcolor{comment}{/*\ set\ quat\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordtype}{void}\ \ \ set(\textcolor{keyword}{const}\ \mbox{\hyperlink{classvec3}{vec3}}\ \&v,\ \textcolor{keywordtype}{float}\ s);\ \ \ \ \ \ \textcolor{comment}{/*\ set\ quat\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{comment}{/*\ friends\ */}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ operator\ -\/\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&v);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ -\/q1\ \ \ \ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00096\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ operator\ +\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&b);\ \ \ \ \textcolor{comment}{/*\ q1\ +\ q2\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ operator\ -\/\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&b);\ \ \ \ \textcolor{comment}{/*\ q1\ -\/\ q2\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ q1\ *\ 3.0\ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ operator\ *\ (\textcolor{keywordtype}{float}\ d,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ 3.0\ *\ q1\ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ operator\ *\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&b);\ \ \ \ \textcolor{comment}{/*\ q1\ *\ q2\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ operator\ /\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keywordtype}{float}\ d);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ q1\ /\ 3.0\ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ operator\ ==\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&b);\ \ \ \ \textcolor{comment}{/*\ q1\ ==\ q2\ ?\ \ \ \ \ */}}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{int}\ operator\ !=\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&b);\ \ \ \ \textcolor{comment}{/*\ q1\ !=\ q2\ ?\ \ \ \ \ */}}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{friend}\ \textcolor{keywordtype}{void}\ swap(\mbox{\hyperlink{classquat}{quat}}\ \&a,\ \mbox{\hyperlink{classquat}{quat}}\ \&b);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ swap\ q1\ \ \&q2\ \ \ */}}
+\DoxyCodeLine{00105\ \ \ \textcolor{comment}{/*friend\ quat\ min(const\ quat\ \&a,\ const\ quat\ \&b);\ \ \ \ \ \ \ \ \ \ -\/-\/\ min(q1,\ q2)\ \ \ \ */}}
+\DoxyCodeLine{00106\ \ \ \textcolor{comment}{/*friend\ quat\ max(const\ quat\ \&a,\ const\ quat\ \&b);\ \ \ \ \ \ \ \ \ \ -\/-\/\ max(q1,\ q2)\ \ \ \ */}}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{friend}\ \mbox{\hyperlink{classquat}{quat}}\ prod(\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&b);\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ term\ by\ term\ mult*/}}
+\DoxyCodeLine{00108\ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{comment}{/*\ Utility\ functions\ */}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \mbox{\hyperlink{classquat}{quat}}\ quat\_identity();\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Returns\ quaternion\ identity\ element\ */}}
+\DoxyCodeLine{00113\ \mbox{\hyperlink{classquat}{quat}}\ quat\_slerp(\textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&from,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classquat}{quat}}\ \&to,\ \textcolor{keywordtype}{float}\ t);}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
